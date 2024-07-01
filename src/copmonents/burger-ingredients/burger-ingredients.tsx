@@ -1,27 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from  './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientGroup from './ingredients-group/ingredients-group';
-function BurgerIngredients() {
-  
+import PropTypes from 'prop-types';
+
+// @ts-ignore: suppress implicit any error
+function BurgerIngredients({ingredients}) {
   const [current, setCurrent] = React.useState('one');
-  const [ingredients, setIngredients] = useState([]);
-  const url = 'https://norma.nomoreparties.space/api/ingredients';
-
-  useEffect(() => {
-    fetch(url)
-      .then(response => response.json())
-      .then(res => {
-        if (res.success) {
-          setIngredients(res.data);
-        } else {
-          console.error('Error fetching ingredients');
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  }, []);
-
-  // @ts-ignore: suppress implicit any error for ingredient
+  //@ts-ignore: suppress implicit any error for ingredient
   const buns = ingredients.filter(ingredient => ingredient.type === 'bun');
   // @ts-ignore: suppress implicit any error for ingredient
   const sauces = ingredients.filter(ingredient => ingredient.type === 'sauce');
@@ -63,3 +49,21 @@ function BurgerIngredients() {
 }
 
 export default BurgerIngredients;
+
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      name: PropTypes.string,
+      type: PropTypes.string,
+      proteins: PropTypes.number,
+      fat: PropTypes.number,
+      carbohydrates: PropTypes.number,
+      calories: PropTypes.number,
+      price: PropTypes.number,
+      image: PropTypes.string,
+      image_mobile: PropTypes.string,
+      image_large: PropTypes.string,
+      __v: PropTypes.number,
+    }).isRequired
+  )}

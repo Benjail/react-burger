@@ -29,7 +29,7 @@ function NavigationPanel({ side }) {
 }
 
 NavigationPanel.propTypes = {
-  side: PropTypes.oneOf(['left', 'right']),
+  side: PropTypes.oneOf(['left', 'right']).isRequired,
 };
 
 export default NavigationPanel;

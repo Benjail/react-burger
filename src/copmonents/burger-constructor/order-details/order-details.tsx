@@ -4,7 +4,7 @@ import doneImage from '../../../images/done.png';
 function OrderDetails() {
   return (
     <>
-        <div className={'text_type_digits-large mt-30'} >
+        <div className={'text_type_digits-large mt-5'} >
             034536
         </div>
         <div className={`text_type_main-medium mt-8`}>

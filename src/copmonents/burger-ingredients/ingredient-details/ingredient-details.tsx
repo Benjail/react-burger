@@ -44,8 +44,7 @@ IngredientDetails.propTypes = {
     image_mobile: PropTypes.string,
     image_large: PropTypes.string,
     __v: PropTypes.number,
-  }),
-  onClose: PropTypes.func,
+  }).isRequired
 };
 
 export default IngredientDetails;

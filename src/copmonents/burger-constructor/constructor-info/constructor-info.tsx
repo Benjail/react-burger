@@ -17,7 +17,7 @@ function BurgerConstructorInfo({onOrderClick}) {
 ) }
 
 BurgerConstructorInfo.propTypes = {
-  onOrderClick: PropTypes.func,
+  onOrderClick: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructorInfo;

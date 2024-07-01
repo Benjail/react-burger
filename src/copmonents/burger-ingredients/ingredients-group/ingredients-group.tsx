@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import IngredientItem from '../ingredient-item/ingredient-item';
 import styles from './ingredients-group.module.css';
+import PropTypes from 'prop-types';
 
 // @ts-ignore: suppress implicit any error
 function IngredientGroup({ ingredients}) {
@@ -16,6 +15,7 @@ function IngredientGroup({ ingredients}) {
   );
 }
 
+export default IngredientGroup;
 IngredientGroup.propTypes = {
   ingredients: PropTypes.arrayOf(
     PropTypes.shape({
@@ -31,9 +31,5 @@ IngredientGroup.propTypes = {
       image_mobile: PropTypes.string,
       image_large: PropTypes.string,
       __v: PropTypes.number,
-    })
-  ),
-  onIngredientClick: PropTypes.func
-};
-
-export default IngredientGroup;
+    }).isRequired
+  )}

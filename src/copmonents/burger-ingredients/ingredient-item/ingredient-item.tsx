@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ingredient-item.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientModal from '../ingredient-modal/ingredient-modal';
+import Modal from '../../modal/modal';
 import IngredientDetails  from '../ingredient-details/ingredient-details';
 
 // @ts-ignore: suppress implicit any error 
@@ -12,8 +12,8 @@ function IngredientItem({ ingredient }) {
   const handleIngredientClick = () => {
     setIsModalOpen(true);
   };
-  const handleCloseModal = () => {  
-    setIsModalOpen(false);
+  const handleCloseModal = () => {   
+    setIsModalOpen(false); 
   };
 
   return (
@@ -22,9 +22,9 @@ function IngredientItem({ ingredient }) {
       <div className={styles.price}>{ingredient.price} <CurrencyIcon type="primary" /></div>
       <div className={`${styles.name} text_type_main-small`}>{ingredient.name}</div>
 
-      {isModalOpen && <IngredientModal onClose={handleCloseModal}>
+      {isModalOpen && <Modal onClose={handleCloseModal} title={"Детали ингредиента"}>
           <IngredientDetails ingredient={ingredient}/>
-        </IngredientModal>}
+        </Modal>}
     </div>
   );
 }
@@ -43,7 +43,7 @@ IngredientItem.propTypes = {
     image_mobile: PropTypes.string,
     image_large: PropTypes.string,
     __v: PropTypes.number,
-  }),
+  }).isRequired,
 };
 
 export default IngredientItem;
