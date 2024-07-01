@@ -1,0 +1,10 @@
+.burger_constructor_info {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content:right;
+}
+
+.text {
+  margin: 0 auto;
+}

@@ -1,0 +1,9 @@
+.ingredients_group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px; /* Adjust the gap between items as needed */
+  }
+
+  .items_container {
+    display: contents; /* To allow the grid layout to work directly on child elements */
+  }
