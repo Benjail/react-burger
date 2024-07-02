@@ -4,7 +4,7 @@ import styles from './ingredient-item.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../modal/modal';
 import IngredientDetails  from '../ingredient-details/ingredient-details';
-import { ingredientPropType } from '../../..//utils/types';
+import { ingredientPropType } from '../../../utils/types';
 
 // @ts-ignore: suppress implicit any error 
 function IngredientItem({ ingredient }) {
@@ -31,7 +31,7 @@ function IngredientItem({ ingredient }) {
 }
 
 IngredientItem.propTypes = {
-  ingredient: PropTypes.shape({ingredientPropType}).isRequired
+  ingredient: PropTypes.shape({ingredientPropType})
 };
 
 export default IngredientItem;

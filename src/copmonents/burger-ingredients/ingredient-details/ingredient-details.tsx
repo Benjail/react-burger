@@ -32,7 +32,7 @@ function IngredientDetails({ ingredient}) {
 }
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.shape({ingredientPropType}).isRequired
+  ingredient: PropTypes.shape({ingredientPropType})
 };
 
 export default IngredientDetails;
