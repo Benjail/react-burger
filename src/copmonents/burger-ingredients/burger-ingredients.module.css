@@ -1,0 +1,32 @@
+.burger_ingredients {
+  width: 600px;
+  height: 912px;
+  background-color: #131316;  
+  border: 1px solid #4c4cff;
+}
+
+.burger_ingredients:hover {
+  border: 2px solid #4c4cff;
+}
+
+.ingritients_textbox {
+  width: 600px;
+}
+
+.ingridients_tabs{
+  display: flex;
+}
+
+.ingredients_container{
+  height: 676px;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.ingredients_group_headline{
+  text-align: left;
+  margin-bottom: 24px;
+}
+

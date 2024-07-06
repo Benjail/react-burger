@@ -1,0 +1,35 @@
+.burger_constructor {
+  width: 600px;
+  height: 912px;
+  background-color: #131316;
+  border: 1px solid #4c4cff;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 10px;
+}
+
+.burger_constructor:hover {
+  border: 2px solid #4c4cff;
+}
+
+.burger_constructor_item {
+  height: 64px;
+  margin-bottom: 16px; 
+}
+
+.info{
+  margin-top: 16px;
+  display: flex;
+  justify-content: end;
+}
+
+.burger_constructor_container {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: 656px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
