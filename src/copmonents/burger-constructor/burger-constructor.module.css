@@ -1,35 +1,84 @@
-.burger_constructor {
-  width: 600px;
-  height: 912px;
-  background-color: #131316;
-  border: 1px solid #4c4cff;
+.items {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  gap: 10px;
+  row-gap: 16px;
+  min-height: 0px;
 }
 
-.burger_constructor:hover {
-  border: 2px solid #4c4cff;
-}
-
-.burger_constructor_item {
-  height: 64px;
-  margin-bottom: 16px; 
-}
-
-.info{
-  margin-top: 16px;
+.item {
+  composes: ml-4 mr-4 from global;
   display: flex;
-  justify-content: end;
+  justify-content: flex-start;
+  /* width: 1000px; */
 }
 
-.burger_constructor_container {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  height: 656px;
-  display: flex;
+.scrollItems {
+  composes: items;
+  min-height: 80px;
   flex-direction: column;
-  gap: 16px;
-  overflow-y: auto;
+  overflow-y: overlay;
+}
+
+.bunItem {
+  composes: mr-4 from global;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 48px;
+  width: 1000px;
+}
+
+
+.itemDrag {
+  composes: mr-2 from global;
+  display: flex;
+  align-self: center;
+  cursor: grab;
+}
+
+.itemDrag:active {
+  cursor: grabbing;
+}
+
+.emptyElement {
+  composes: constructor-element from global;
+  display: flex;
+  margin-left: 48px;
+  margin-right: 16px;
+}
+
+.emptyElementText {
+  composes: constructor-element__text empty-element__text from global;
+  justify-content: center;
+}
+
+.itemEmpty {
+  display: flex;
+  width: 100%;
+}
+
+.bunEmptyElement {
+  composes: constructor-element from global;
+  display: flex;
+}
+
+.drop {
+  box-sizing: content-box;
+  border: 1px solid transparent;
+}
+
+@media screen and (max-width: 1279px) {
+  .bunItem {
+    margin-left: 32px;
+    width: 100%;
+  }
+
+  .item {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .scrollItems {
+    max-height: 100%;
+  }
 }

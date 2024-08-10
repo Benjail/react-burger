@@ -1,14 +1,13 @@
 import IngredientItem from '../ingredient-item/ingredient-item';
 import styles from './ingredients-group.module.css';
 import PropTypes from 'prop-types';
-import { ingredientPropType } from '../../..//utils/types';
+import { ingredientPropType } from '../../../api/utils/types';
 
-// @ts-ignore: suppress implicit any error
 function IngredientGroup({ ingredients}) {
   return (
     <div className={styles.ingredients_group}>
       <div className={styles.items_container}>
-        {ingredients.map((ingredient :any) => (
+        {ingredients.map((ingredient) => (
           <IngredientItem key={ingredient._id} ingredient={ingredient}/>
         ))}
       </div>
