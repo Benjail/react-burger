@@ -30,7 +30,5 @@ export const ingredientsSlice = createSlice({
 
 export const loadIngredients = createAsyncThunk(
     "ingredients/load",
-    async () => {
-        return await getIngredientsApi();
-    }
+    getIngredientsApi
   )

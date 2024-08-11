@@ -2,13 +2,14 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import {  appendBunCart,
-  appendIngredientCart,
-  removeCart,
-  sortCart} from "../../services/slices/cart"; 
+import {
+  appendBunCart, appendIngredientCart, removeCart, sortCart
+} from "../../services/slices/cart";
+import { ingredientPropType } from "../../utils/types";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
 import { nanoid } from "@reduxjs/toolkit";
@@ -24,15 +25,17 @@ export default function BurgerConstructor() {
   const { ingredients, bunIngredient, orderIngredients } = useSelector(
     constructorDataSelector
   );
-  const [ingredientsList, setIngredients] = useState(new Map());
+  const [ingredientsMap, setIngredientsMap] = useState(new Map());
 
   useEffect(() => {
-    setIngredients(
+    setIngredientsMap(
       new Map(ingredients.map((ingredient) => [ingredient._id, ingredient]))
     );
   }, [ingredients]);
 
- 
+  const onDropBun = (item) => {
+    dispatch(appendBunCart(item._id));
+  };
   const onDropIngredient = (item) => {
     dispatch(
       appendIngredientCart({
@@ -41,21 +44,18 @@ export default function BurgerConstructor() {
       })
     );
   };
-  const onDropBun = (item) => {
-    dispatch(appendBunCart(item._id));
-  };
-  
+
   const FirstBunItem = () => (
     <BunItem
       first={true}
-      ingredient={ingredientsList.get(bunIngredient)}
+      ingredient={ingredientsMap.get(bunIngredient)}
       onDrop={onDropBun}
     />
   );
   const LastBunItem = () => (
     <BunItem
       first={false}
-      ingredient={ingredientsList.get(bunIngredient)}
+      ingredient={ingredientsMap.get(bunIngredient)}
       onDrop={onDropBun}
     />
   );
@@ -63,12 +63,12 @@ export default function BurgerConstructor() {
   const onDeleteItem = (uuid) => {
     dispatch(removeCart(uuid));
   };
-  const onSortItem = (oldUuid, newUuid) => {
-    if (oldUuid === newUuid) return;
+  const onSortItem = (prevUuid, newUuid) => {
+    if (prevUuid === newUuid) return;
 
     dispatch(
       sortCart({
-        oldUuid,
+        prevUuid,
         newUuid,
       })
     );
@@ -82,7 +82,7 @@ export default function BurgerConstructor() {
     >
       {orderIngredients.length ? (
         orderIngredients.map(({ id, uuid }) => {
-          const ingredient = ingredientsList.get(id);
+          const ingredient = ingredientsMap.get(id);
 
           return (
             <React.Fragment key={uuid}>
@@ -118,7 +118,7 @@ export default function BurgerConstructor() {
 }
 
 function IngredientItem(props) {
-  const [_, drag] = useDrag({
+  const [, drag] = useDrag({
     type: "order",
     item: { uuid: props.uuid },
   });
@@ -139,6 +139,12 @@ function IngredientItem(props) {
     </DropTarget>
   );
 }
+IngredientItem.propTypes = {
+  ingredient: ingredientPropType.isRequired,
+  uuid: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSortItem: PropTypes.func.isRequired,
+};
 
 function BunItem(props) {
   const text = `${props.ingredient?.name} (${props.first ? "верх" : "низ"})`;
@@ -173,9 +179,13 @@ function BunItem(props) {
     </DropTarget>
   );
 }
+BunItem.propTypes = {
+  first: PropTypes.bool.isRequired,
+  ingredient: ingredientPropType,
+};
 
 function DropTarget({ children, onDrop, accept, className }) {
-  const [{ isHover }, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop({
     accept,
     drop(item) {
       onDrop(item);

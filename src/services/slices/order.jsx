@@ -5,13 +5,9 @@ import { resetCart } from "./cart";
 export const createOrder = createAsyncThunk(
   "order/create",
   async (orderListIds, { dispatch, rejectWithValue }) => {
-    try {
-      const data = await createOrderApi(orderListIds);
-      dispatch(resetCart());
-      return data;
-    } catch (err) {
-      return rejectWithValue(err);
-    }
+    const data = await createOrderApi(orderListIds);
+    dispatch(resetCart());
+    return data;   
   }
 );
 

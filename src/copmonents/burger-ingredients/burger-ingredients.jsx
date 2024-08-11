@@ -14,8 +14,6 @@ import styles from "./burger-ingredients.module.css";
 import { useDrag } from "react-dnd";
 import { openDetails} from "../../services/slices/details"; 
 
-import {loadIngredients} from '../.././services/slices/ingredients';
-
 const ingredientTypesMap = {
   main: "Начинки",
   bun: "Булки",
@@ -104,13 +102,6 @@ export default function BurgerIngredients() {
     };
   }, [groupIngredients]);
 
-  useEffect(() => {
-    dispatch(loadIngredients());
-  }, [dispatch]);
-
-if (loading) {
-  return <div>Loading...</div>;  // Отображаем индикатор загрузки
-}
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
     categoriesRefs[currentTab]?.current?.scrollIntoView();
