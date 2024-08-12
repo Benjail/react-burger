@@ -1,0 +1,8 @@
+.text {
+  composes: text text_type_digits-large mt-4 mb-8 from global;
+}
+
+.content {
+  composes: pb-20 from global;
+  text-align: center;
+}

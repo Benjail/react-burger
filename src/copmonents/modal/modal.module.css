@@ -1,54 +1,28 @@
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modalContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
 .modal {
-  width: 720px;
-  height: 538px;
-  background-color: #1C1C21;
-  border-radius: 40px;
+  composes: p-10 from global;
   position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.modal:hover {
-  border: 2px solid #4C4CFF;
+  background: var(--background);
+  align-self: center;
+  overflow: overlay;
+  max-height: 100vh;
+  max-width: 720px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 40px;
 }
 
 .header {
-  width: 100%;
+  composes: mr-8 from global;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: nowrap;
+  min-height: 64px;
   align-items: center;
-  padding: 16px 40px;
-  box-sizing: border-box;
 }
 
-.closeButton {
+.close {
   position: absolute;
-  top: 60px;
   right: 40px;
-  background: none;
+  top: 60px;
   cursor: pointer;
-  color: white;
+  display: flex;
 }
