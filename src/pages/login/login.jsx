@@ -13,11 +13,9 @@ export function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state, pathname } = useLocation();
-  const { isLogin, error, loading } = useSelector((state) => ({
-    isLogin: !!state.profile?.name,
-    error: state.profile?.request.error,
-    loading: state.profile?.request.loading,
-  }));
+  const isLogin = useSelector((state) => !!state.profile?.name);
+  const error = useSelector((state) => state.profile?.request.error);
+  const loading = useSelector((state) => state.profile?.request.loading);
   const init = useRef();
 
   const {

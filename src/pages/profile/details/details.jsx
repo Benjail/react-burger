@@ -1,6 +1,5 @@
 import {
   Button,
-  PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormFieldPassword } from "../../../copmonents/form-fields/password/password";
 import styles from "./details.module.css";

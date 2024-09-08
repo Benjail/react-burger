@@ -38,7 +38,13 @@ export default function App() {
         <AppHeader />
         <Routes location={location.state?.backgroundLocation || location}>
           <Route path={HOME_ROUTE} element={<HomePage />} />
-          <Route path={LOGIN_ROUTE} element={<LoginPage />} />
+          <Route path={LOGIN_ROUTE} 
+            element={
+              <ProtectedRouteElement
+            element = {<LoginPage />} 
+            />
+            }
+            />
           <Route
             path={REGISTER_ROUTE}
             element={

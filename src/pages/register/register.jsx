@@ -13,11 +13,9 @@ export function RegisterPage() {
   const [formValid, setFormValid] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isRegister, error, loading } = useSelector((state) => ({
-    isRegister: !!state.profile?.name,
-    error: state.profile?.request.error,
-    loading: state.profile?.request.loading,
-  }));
+  const isRegister = useSelector((state) => !!state.profile?.name);
+  const error = useSelector((state) => state.profile?.request.error);
+  const loading = useSelector((state) => state.profile?.request.loading);
 
   const {
     field: nameField,

@@ -8,11 +8,10 @@ import { LOGIN_ROUTE } from "../../../const/routes";
 export function LogoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLogout, error, loading } = useSelector((state) => ({
-    isLogout: !state.profile.name,
-    error: state.profile.request.error,
-    loading: state.profile.request.loading,
-  }));
+
+  const isLogout = useSelector((state) => !state.profile.name);
+  const error = useSelector((state) => state.profile.request.error);
+  const loading = useSelector((state) => state.profile.request.loading);
 
   useEffect(() => {
     dispatch(logout());

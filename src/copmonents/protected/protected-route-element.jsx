@@ -39,6 +39,11 @@ export const ProtectedRouteElement = ({ element, authRestricted }) => {
     return null;
   }
 
+  if (user && pathname === LOGIN_ROUTE)
+  {
+    navigate(-1);
+  }
+  
   return user || authRestricted ? (
     element
   ) : (
