@@ -1,36 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-export default class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+const ErrorBoundary = ({ children, error: propError }) => {
+  const [hasError, setHasError] = useState(false);
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, info) {
-    console.error("Возникла ошибка!", error, info);
-    this.setState({ hasError: true });
-  }
-
-  render() {
-    if (this.state.hasError || this.props.error) {
-      return (
-        <section>
-          <h1>Что-то пошло не так :(</h1>
-          <p>
-            В приложении произошла ошибка. Пожалуйста, перезагрузите страницу.
-          </p>
-          <pre>{this.props.error}</pre>
-        </section>
-      );
+  useEffect(() => {
+    if (propError) {
+      setHasError(true);
     }
-    return this.props.children;
+  }, [propError]);
+
+  const componentDidCatch = (error, info) => {
+    console.error("Возникла ошибка!", error, info);
+    setHasError(true);
+  };
+
+  useEffect(() => {
+    const errorHandler = (error, info) => {
+      componentDidCatch(error, info);
+    };
+
+    return () => {
+       window.removeEventListener('error', errorHandler);
+    };
+  }, []);
+
+  if (hasError || propError) {
+    return (
+      <section>
+        <h1>Что-то пошло не так :(</h1>
+        <p>В приложении произошла ошибка. Пожалуйста, перезагрузите страницу.</p>
+        <pre>{propError}</pre>
+      </section>
+    );
   }
-}
+
+  return children;
+};
+
 ErrorBoundary.propTypes = {
   error: PropTypes.string,
+  children: PropTypes.node.isRequired,
 };
+
+export default ErrorBoundary;
