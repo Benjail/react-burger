@@ -1,46 +1,105 @@
 import AppHeader from './app-header/app-header';
-import BurgerIngredients from './burger-ingredients/burger-ingredients';
-import BurgerConstructor from './burger-constructor/burger-constructor';
 import styles from './App.module.css';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useEffect  } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
-import {loadIngredients} from '../services/slices/ingredients';
+import { useSelector } from "react-redux";
+import { Route, Routes, useLocation } from "react-router-dom";
+import BurgerIngredientModal from "../pages/burger-ingredient/burger-ingredient-modal";
+import { ForgotPasswordPage } from "../pages/forgot-password/forgot-password";
+import { HomePage } from "../pages/home/home";
+import { LoginPage } from "../pages/login/login";
+import { NotFoundPage } from "../pages/not-found/not-found";
+import { ProfileDetailsPage } from "../pages/profile/details/details";
+import { LogoutPage } from "../pages/profile/logout/details";
+import { ProfileOrdersPage } from "../pages/profile/orders/orders";
+import { ProfilePage } from "../pages/profile/profile";
+import { RegisterPage } from "../pages/register/register";
+import { ResetPasswordPage } from "../pages/reset-password/reset-password";
+import ErrorBoundary from "./error-boundary/error-boundary";
+import { ProtectedRouteElement } from "./protected/protected-route-element";
+import {
+  FORGOT_PASSWORD_ROUTE,
+  HOME_ROUTE,
+  INGREDIENT_ROUTE,
+  LOGIN_ROUTE,
+  PROFILE_LOGOUT_ROUTE,
+  PROFILE_ORDERS_ROUTE,
+  PROFILE_ROUTE,
+  REGISTER_ROUTE,
+  RESET_PASSWORD_ROUTE,
+} from "../const/routes";
+import BurgerIngredientPage from "../pages/burger-ingredient/burger-ingredient-page";
 
-function App() {
-  const dispatch = useDispatch();  
-  const {loading, error } = useSelector(state => state.ingredients);
-  useEffect(() => { 
-    dispatch(loadIngredients());
-  }, []);
-  if(loading)
-  {
-    <p>Loading...</p>
-  }
-
-  if (!loading && error) {
-    return <p>Ошибка: {error}</p>
-  } 
+export default function App() {
+  const overlayError = useSelector((state) => state.error?.overlayError|| null);
+  const location = useLocation();
 
   return (
-    <div className={styles.wrapper}>
-     <AppHeader />
-        <DndProvider backend={HTML5Backend}>
-          <main className={styles.container}>
-            <div className={styles.side}>
-              <h1 className="text text_type_main-large mt-10 mb-5">
-                Соберите бургер
-              </h1>
-              <BurgerIngredients />
-            </div>
-            <div className={styles.constructorContainer}>
-              <BurgerConstructor />
-            </div>
-          </main>
-        </DndProvider>
-    </div>
+    <ErrorBoundary error={overlayError}>
+      <div className={styles.wrapper}>
+        <AppHeader />
+        <Routes location={location.state?.backgroundLocation || location}>
+          <Route path={HOME_ROUTE} element={<HomePage />} />
+          <Route path={LOGIN_ROUTE} 
+            element={
+              <ProtectedRouteElement
+            element = {<LoginPage />} 
+            />
+            }
+            />
+          <Route
+            path={REGISTER_ROUTE}
+            element={
+              <ProtectedRouteElement
+                element={<RegisterPage />}
+                authRestricted={true}
+              />
+            }
+          />
+          <Route
+            path={FORGOT_PASSWORD_ROUTE}
+            element={
+              <ProtectedRouteElement
+                element={<ForgotPasswordPage />}
+                authRestricted={true}
+              />
+            }
+          />
+          <Route
+            path={RESET_PASSWORD_ROUTE}
+            element={
+              <ProtectedRouteElement
+                element={<ResetPasswordPage />}
+                authRestricted={true}
+              />
+            }
+          />
+          <Route
+            path={PROFILE_ROUTE}
+            element={<ProtectedRouteElement element={<ProfilePage />} />}
+          >
+            <Route path="" element={<ProfileDetailsPage />} />
+            <Route
+              path={PROFILE_ORDERS_ROUTE}
+              element={<ProfileOrdersPage />}
+            />
+            <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} />
+          </Route>
+          {!location.state?.backgroundLocation && (
+            <Route
+              path={INGREDIENT_ROUTE + "/:productId"}
+              element={<BurgerIngredientPage />}
+            />
+          )}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+        {location.state?.backgroundLocation && (
+          <Routes>
+            <Route
+              path={INGREDIENT_ROUTE + "/:productId"}
+              element={<BurgerIngredientModal />}
+            />
+          </Routes>
+        )}
+      </div>
+    </ErrorBoundary>
   );
 }
-
-export default App;

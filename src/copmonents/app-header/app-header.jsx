@@ -1,21 +1,55 @@
 import styles from './app-header.module.css';
-import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
-import NavigationPanel from './navigation-panel/navigation-panel';
-
-function AppHeader() {
-  return ( 
-      <header className = {`${styles.appHeader} ml-10 mt-10 mr-10`}>
-        <div className = {styles.leftSection}>
-          <NavigationPanel side="left"/>
-        </div>
-        <div className = {styles.logoContainer}>  
-        <Logo />
-        </div>
-        <div className = {styles.rightSection}>
-           <NavigationPanel side="right"/>
-        </div>
-      </header>
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink } from "react-router-dom";
+import {
+  HOME_ROUTE,
+  PROFILE_ORDERS_ROUTE,
+  PROFILE_ROUTE,
+} from "../../const/routes";
+function LinkItem({ icon: Icon, to, text }) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`
+      }
+      end
+    >
+      {({ isActive }) => (
+        <>
+          {Icon && <Icon type={isActive ? "primary" : "secondary"} />}
+          <span className={styles.menuItemText}>{text}</span>
+        </>
+      )}
+    </NavLink>
   );
 }
 
-export default AppHeader;
+export default function AppHeader() {
+  return (
+    <header className={styles.header}>
+      <div className={styles.container}>
+        <nav>
+          <ul className={styles.menu}>
+            <LinkItem icon={BurgerIcon} to={HOME_ROUTE} text="Конструктор" />
+            <LinkItem
+              icon={ListIcon}
+              to={PROFILE_ORDERS_ROUTE}
+              text="Лента заказов"
+            />
+          </ul>
+        </nav>
+        <Logo />
+        <nav>
+          <ul className={styles.rightMenu}>
+            <LinkItem
+              icon={ProfileIcon}
+              to={PROFILE_ROUTE}
+              text="Личный кабинет"
+            />
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
+}

@@ -6,13 +6,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ingredientPropType } from "../../utils/types";
-import IngredientDetails from "../burger-ingredients/ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
 import { useDrag } from "react-dnd";
-import { openDetails} from "../../services/slices/details"; 
+import { useLocation, useNavigate } from "react-router-dom";
+import { INGREDIENT_ROUTE } from "../../const/routes";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -40,12 +39,10 @@ export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [groupIngredients, setGroupIngredients] = useState([]);
   const [thresholds, setThreshholds] = useState({});
-  const { ingredients,loading, ingredientDetails, countsMap} = useSelector(
-    ingredientsDataSelector
-  );
-
+  const { ingredients, countsMap } = useSelector(ingredientsDataSelector);
+  const navigate = useNavigate();
+  let location = useLocation();
   const scrollRef = useRef();
-  const dispatch = useDispatch();
 
   const categoriesRefs = {
     main: useRef(),
@@ -108,11 +105,9 @@ export default function BurgerIngredients() {
   }
 
   function onIngredientClick(ingredient) {
-    if (ingredient) {
-      dispatch(openDetails(ingredient._id));
-    } else {
-      dispatch(openDetails());
-    }
+    navigate(`${INGREDIENT_ROUTE}/${ingredient._id}`, {
+      state: { backgroundLocation: location },
+    });
   }
 
   return (
@@ -138,11 +133,6 @@ export default function BurgerIngredients() {
           </div>
         ))}
       </div>
-      {ingredientDetails && (
-        <Modal header="Детали ингредиента" onClose={() => onIngredientClick(null)}>
-          <IngredientDetails ingredient={ingredientDetails} />
-        </Modal>
-      )}
     </div>
   );
 }
