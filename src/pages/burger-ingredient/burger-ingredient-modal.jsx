@@ -13,10 +13,10 @@ export default function BurgerIngredientModal() {
 
   const onCloseModal = useCallback(() => {
     navigate(location.state?.backgroundLocation);
-  }, []);
+  }, [navigate, location]);
 
   useEffect(() => {
-    setProduct(ingredients.find(({ _id }) => _id == productId));
+    setProduct(ingredients.find(({ _id }) => _id === productId));
   }, [ingredients, productId]);
 
   return (

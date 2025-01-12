@@ -22,17 +22,17 @@
 }
 
 .menuItem {
-  composes: text text_type_main-default pt-4 pb-4 pl-5 pr-5 mt-4 mb-4 text_color_inactive from global;
+  composes: text text_type_main-default pt-4 pb-4 pl-5 pr-5 mt-4 mb-4 from global;
+  color: var(--text-primary-color);
+  text-decoration: none;
   display: flex;
   align-items: center;
   border-radius: 40px;
-  column-gap: 8px;
-  white-space: nowrap;
-  text-decoration: none;
+  padding: 16px 20px;
 }
 
-.menuItemActive {
-  color: var(--text-primary-color);
+.menuItem.inactive {
+  color: var(--text-inactive-color);
 }
 
 .menuItemText {

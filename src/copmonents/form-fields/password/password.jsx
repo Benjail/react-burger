@@ -41,7 +41,7 @@ export function useFormFieldPassword({
 
     setValid(newValid);
     setPasswordError(!newValid && passwordTyped.current ? errorText : "");
-  }, [password]);
+  }, [password, errorText, minLenght]);
 
   return {
     field: (

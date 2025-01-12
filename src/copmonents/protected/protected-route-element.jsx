@@ -1,56 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { getUser } from "../../services/slices/profile";
-import PropTypes from "prop-types";
-import { LOGIN_ROUTE } from "../../const/routes";
+import { useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
+import Preloader from "../preloader/preloader";
 
-export const ProtectedRouteElement = ({ element, authRestricted }) => {
-  const dispatch = useDispatch();
-  const [isUserLoaded, setUserLoaded] = useState(false);
-  const [user, setUser] = useState();
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const init = useRef();
-
-  useEffect(() => {
-    dispatch(getUser())
-      .unwrap()
-      .then((user) => {
-        setUser(user);
-      })
-      .finally(() => {
-        setUserLoaded(true);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (authRestricted && user && !init.current) {
-      init.current = true;
-      navigate(-1);
-    }
-
-    return () => {
-      init.current = null;
-    };
-  }, [user, authRestricted]);
-
-  if (!isUserLoaded || (user && authRestricted)) {
-    return null;
-  }
-
-  if (user && pathname === LOGIN_ROUTE)
-  {
-    navigate(-1);
-  }
+const ProtectedRouteElement = ({  element, onlyUnAuth = false  }) => {
+  const isAuthChecked = useSelector((state) => state.profile.isAuthChecked);
+  const user = useSelector((state) => state.profile.user);
+  const location = useLocation();
   
-  return user || authRestricted ? (
-    element
-  ) : (
-    <Navigate to={LOGIN_ROUTE} state={{ protectedFrom: pathname }} />
-  );
+  console.log("isAuthChecked:", isAuthChecked);
+  console.log("user:", user);
+  console.log("location:", location);
+
+  if (!isAuthChecked) {
+    return <Preloader />;
+  }
+
+  if (onlyUnAuth && user) {
+    const { from } = location.state || { from: { pathname: '/' } };
+    return <Navigate to={from} />;
+  }
+
+  if (!onlyUnAuth && !user) {
+    return <Navigate to='/login' state={{ from: location }} />;
+  }
+
+  return element;
 };
-ProtectedRouteElement.propTypes = {
-  element: PropTypes.element.isRequired,
-  authRestricted: PropTypes.bool,
-};
+
+export default ProtectedRouteElement;

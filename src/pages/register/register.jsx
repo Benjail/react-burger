@@ -6,7 +6,7 @@ import { useFormFieldEmail } from "../../copmonents/form-fields/email/email";
 import { useFormFieldPassword } from "../../copmonents/form-fields/password/password";
 import { useFormFieldText } from "../../copmonents/form-fields/text/text";
 import styles from "./register.module.css";
-import { register } from "../../services/slices/profile";
+import { register } from "../../services/slices/profile-slice";
 import { HOME_ROUTE, LOGIN_ROUTE } from "../../const/routes";
 
 export function RegisterPage() {
@@ -51,7 +51,7 @@ export function RegisterPage() {
     if (isRegister) {
       navigate(HOME_ROUTE, { replace: true });
     }
-  }, [isRegister]);
+  }, [isRegister, navigate]);
 
   useEffect(() => {
     setFormValid(nameValid && emailValid && passwordValid);

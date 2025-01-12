@@ -1,28 +1,26 @@
-import {
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormFieldPassword } from "../../../copmonents/form-fields/password/password";
 import styles from "./details.module.css";
 import { useFormFieldText } from "../../../copmonents/form-fields/text/text";
 import { useFormFieldEmail } from "../../../copmonents/form-fields/email/email";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
-import { updateProfile } from "../../../services/slices/profile";
+import { updateUser } from "../../../services/slices/profile-slice";
 
 const initialPassword = "******";
 
 export function ProfileDetailsPage() {
   const {
     request: { error, loading },
-    ...profile
+    user,
   } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
-  const [changedForm, setChangedForm] = useState();
-  const [valid, setValid] = useState();
+  const [changedForm, setChangedForm] = useState(false);
+  const [valid, setValid] = useState(true);  
 
   const {
     field: nameField,
-    valid: nameValid,
+    valid: nameValid = true, 
     value: name,
     setValue: setName,
   } = useFormFieldText({
@@ -32,18 +30,20 @@ export function ProfileDetailsPage() {
     isRequired: true,
     editable: true,
   });
+
   const {
     field: emailField,
-    valid: emailValid,
+    valid: emailValid = true,  
     value: email,
     setValue: setEmail,
   } = useFormFieldEmail({
     placeholder: "Логин",
     editable: true,
   });
+
   const {
     field: passwordField,
-    valid: passwordValid,
+    valid: passwordValid = true,  
     value: password,
     setValue: setPassword,
   } = useFormFieldPassword({
@@ -53,29 +53,34 @@ export function ProfileDetailsPage() {
 
   const onSave = useCallback(() => {
     const newPassword = password === initialPassword ? {} : { password };
+    dispatch(updateUser({ name, email, ...newPassword }));
+  }, [name, email, password, dispatch]);
 
-    dispatch(updateProfile({ name, email, ...newPassword }));
-  }, [name, email, password]);
   const onCancel = useCallback(() => {
-    setName(profile.name);
-    setEmail(profile.email);
+    setName(user.name);
+    setEmail(user.email);
     setPassword(initialPassword);
-  }, [profile, name, email, password]);
+  }, [user, setName, setEmail, setPassword]);
 
+  // Инициализация значений при загрузке профиля
   useEffect(() => {
-    setName(profile.name);
-    setEmail(profile.email);
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+    }
     setPassword(initialPassword);
-  }, [profile.name, profile.email]);
+  }, [setName, setEmail, setPassword, user]);
 
+  // Проверка изменения формы
   useEffect(() => {
     setChangedForm(
-      name !== profile.name ||
-        email !== profile.email ||
-        password !== initialPassword
+      (user.name && name !== user.name) ||
+      (user.email && email !== user.email) ||
+      password !== initialPassword
     );
-  }, [profile, name, email, password]);
+  }, [user, name, email, password]);
 
+  // Валидация формы
   useEffect(() => {
     setValid(nameValid && emailValid && passwordValid);
   }, [nameValid, emailValid, passwordValid]);

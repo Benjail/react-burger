@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import createOrderApi from "../../utils/api/create-order";
-import { resetCart } from "./cart";
+import {createOrderApi} from "../../utils/api";
+import { resetCart } from "./cart-slice";
 
 export const createOrder = createAsyncThunk(
   "order/create",
@@ -18,7 +18,7 @@ const initialState = {
   open: false,
 };
 
-export const orderSlice = createSlice({
+const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
@@ -31,20 +31,11 @@ export const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createOrder.pending, (state) => {
-        state.loading = true;
-        state.error = false;
-      })
-      .addCase(createOrder.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.loading = false;
-        state.open = true;
-      })
-      .addCase(createOrder.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      });
+      .addCase(createOrder.pending, (state) => { state.loading = true; state.error = false;})
+      .addCase(createOrder.fulfilled, (state, action) => { state.data = action.payload; state.loading = false; state.open = true;})
+      .addCase(createOrder.rejected, (state, action) => { state.error = action.payload; state.loading = false;});
   },
 });
 
 export const { openOrder, closeOrder } = orderSlice.actions;
+export default orderSlice;

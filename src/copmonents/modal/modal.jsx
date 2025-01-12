@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import styles from "./modal.module.css";
@@ -20,7 +20,7 @@ export default function Modal(props) {
     return () => {
       document.removeEventListener("keyup", onEscape, false);
     };
-  }, [props.onClose]);
+  }, [props]);
 
   return ReactDOM.createPortal(
     <>

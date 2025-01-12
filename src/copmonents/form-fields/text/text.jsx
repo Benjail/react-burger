@@ -29,18 +29,6 @@ export function useFormFieldText({
   const [isEdit, setIsEdit] = useState(!editable);
   const [error, setError] = useState(errorText);
 
-  const isValid = () => {
-    if (isRequired && !value) {
-      return false;
-    }
-
-    if (regex) {
-      return regex.test(value);
-    } else {
-      return true;
-    }
-  };
-
   const onFieldBlur = () => {
     setError(valid ? "" : errorText);
 
@@ -69,9 +57,17 @@ export function useFormFieldText({
     if (value && !isTyped.current) {
       isTyped.current = true;
     }
-
-    setValid(isValid());
-  }, [value]);
+    const checkValid = () => {
+      if (isRequired && !value) {
+        return false;
+      }
+      if (regex) {
+        return regex.test(value);
+      }
+      return true;
+    };
+    setValid(checkValid());
+  },  [value, isRequired, regex]);
 
   return {
     field: (

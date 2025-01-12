@@ -5,7 +5,7 @@ import {
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { ingredientPropType } from "../../utils/types";
 import styles from "./burger-ingredients.module.css";
@@ -39,16 +39,17 @@ export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [groupIngredients, setGroupIngredients] = useState([]);
   const [thresholds, setThreshholds] = useState({});
-  const { ingredients, countsMap } = useSelector(ingredientsDataSelector);
+  const { ingredients, countsMap, loading } = useSelector(ingredientsDataSelector);
   const navigate = useNavigate();
   let location = useLocation();
+ // const dispatch = useDispatch();
   const scrollRef = useRef();
 
-  const categoriesRefs = {
-    main: useRef(),
-    bun: useRef(),
-    sauce: useRef(),
-  };
+  const categoriesRefs = useMemo(() => ({
+    main: React.createRef(),
+    bun: React.createRef(),
+    sauce: React.createRef(),
+  }), []);
 
   useEffect(() => {
     setGroupIngredients(getIngredientsList(ingredients));
@@ -97,7 +98,7 @@ export default function BurgerIngredients() {
     return () => {
       observer.disconnect();
     };
-  }, [groupIngredients]);
+  }, [groupIngredients,categoriesRefs]);
 
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
@@ -109,6 +110,11 @@ export default function BurgerIngredients() {
       state: { backgroundLocation: location },
     });
   }
+
+// Заглушка при загрузке или отсутствии данных
+if (loading || !ingredients) {
+  return <p className="text text_type_main-large">Загрузка ингредиентов...</p>;
+}
 
   return (
 
@@ -138,7 +144,7 @@ export default function BurgerIngredients() {
 }
 
 const IngredientItem = React.memo((props) => {
-  const [_, drag] = useDrag({
+  const [, drag] = useDrag({
     type: props.ingredient.type === "bun" ? "bun" : "ingredient",
     item: props.ingredient,
   });

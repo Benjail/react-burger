@@ -11,14 +11,15 @@ import {
     useReducer,
     useState,
   } from "react";
+  
+  import { useLocation, useNavigate } from 'react-router-dom';
   import { useDispatch, useSelector } from "react-redux";
-  import { closeOrder, createOrder } from "../../services/slices/order";
+  import { closeOrder, createOrder } from "../../services/slices/order-slice";
   import Modal from "../modal/modal";
   import OrderDetails from "../order-details/order-details";
   import styles from "./order.module.css";
   
   const initialState = { totalPrice: 0 };
-  
   function totalPriceReducer(state, action) {
     switch (action.type) {
       case "reset":
@@ -34,15 +35,17 @@ import {
   
   const orderDataSelector = (state) => ({
     ingredients: state.ingredients.data,
-    order: state.order.data?.number,
+    order: state.order.data,
     orderLoading: state.order.loading,
     error: state.order.error,
     orderOpen: state.order.open,
+    user: state.profile.user
   });
   
   const OrderTotal = (props) => {
-    const { ingredients, order, orderLoading, error, orderOpen } =
+    const { ingredients, order, orderLoading, error, orderOpen, user } =
       useSelector(orderDataSelector);
+
     const ingredientsMap = useMemo(
       () =>
         new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
@@ -55,7 +58,9 @@ import {
       initialState
     );
     const dispatch = useDispatch();
-  
+    const navigate = useNavigate();
+    const location = useLocation();
+
     useEffect(() => {
       totalPriceDispatch({ type: "reset" });
   
@@ -76,7 +81,26 @@ import {
       setValid(Boolean(props.bunItem));
     }, [ingredientsMap, props.bunItem, props.orderIngredients]);
   
-    const onCompleteClick = useCallback(() => {
+    // const onCompleteClick = useCallback(() => {
+    //   if (!user) {
+    //     return navigate('/login', { state: { from: location } });
+    //   }
+
+    //   dispatch(
+    //     createOrder(
+    //       [props.bunItem, ...props.orderIngredients.map(({ id }) => id)].filter(
+    //         Boolean
+    //       )
+    //     )
+    //   );
+    //   navigate('/', { state: { backgroundLocation: location } });
+    // }, [props.bunItem, props.orderIngredients]);
+
+    const handleSubmitOrder = useCallback(() => {
+      if (!user) {
+        return navigate('/login', { state: { from: location } });
+      }
+    
       dispatch(
         createOrder(
           [props.bunItem, ...props.orderIngredients.map(({ id }) => id)].filter(
@@ -84,7 +108,9 @@ import {
           )
         )
       );
-    }, [props.bunItem, props.orderIngredients]);
+    }, [user, navigate, location, dispatch, props.bunItem, props.orderIngredients]);
+    
+
     const onCompleteModalClose = useCallback(() => {
       dispatch(closeOrder());
     }, [dispatch]);
@@ -105,13 +131,13 @@ import {
             size="large"
             extraClass="ml-10"
             disabled={orderLoading || !valid}
-            onClick={onCompleteClick}
+            onClick={handleSubmitOrder}
           >
             Оформить заказ
           </Button>
           {orderOpen && (
             <Modal onClose={onCompleteModalClose}>
-              <OrderDetails order={order} />
+              <OrderDetails order={order.order?.number} />
             </Modal>
           )}
         </div>

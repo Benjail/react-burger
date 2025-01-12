@@ -1,88 +1,51 @@
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useFormFieldEmail } from "../../copmonents/form-fields/email/email";
-import { useFormFieldPassword } from "../../copmonents/form-fields/password/password";
-import { login } from "../../services/slices/profile";
-import styles from "./login.module.css";
-import { FORGOT_PASSWORD_ROUTE, REGISTER_ROUTE } from "../../const/routes";
+import { Link, useLocation } from 'react-router-dom';
+import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export function LoginPage() {
-  const [formValid, setFormValid] = useState(false);
+import useFormData from '../../copmonents/hooks/use-form-data';
+import styles from './login.module.css';
+import { useDispatch } from 'react-redux';
+import { login } from '../../services/slices/profile-slice';
+
+export default function LoginPage() {
+  const { formData, onChangeFormData, checkFormData } = useFormData({ email: '', password: '' });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { state, pathname } = useLocation();
-  const isLogin = useSelector((state) => !!state.profile?.name);
-  const error = useSelector((state) => state.profile?.request.error);
-  const loading = useSelector((state) => state.profile?.request.loading);
-  const init = useRef();
+  const location = useLocation();
 
-  const {
-    field: passwordField,
-    valid: passwordValid,
-    value: password,
-  } = useFormFieldPassword();
-
-  const {
-    field: emailField,
-    valid: emailValid,
-    value: email,
-  } = useFormFieldEmail();
-
-  const onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    const isError = e.target.querySelector('.input__error');
+    if (isError) return;
+
+    if (checkFormData.status) {
+      dispatch(login(formData)).unwrap().catch((err) => {
+        const error = Object.assign(document.createElement('p'), { className: 'input__error text_type_main-default', textContent: err.message });
+        const input = e.target.querySelector('[name="password"]').closest('.input');
+        input.closest('.input__container').append(error);
+        setTimeout(() => {
+          error.remove();
+        }, 2000);
+      });;
+    } else {
+      e.target.querySelector(`[name=${checkFormData.field}]`).closest('.input').classList.add('input_status_error');
+    }
   };
 
-  useEffect(() => {
-    if (isLogin && !init.current) {
-      init.current = true;
-      const route =
-        state?.protectedFrom === pathname ? -1 : state?.protectedFrom || -1;
-
-      navigate(route, { replace: true });
-    }
-  }, [isLogin, state]);
-
-  useEffect(() => {
-    setFormValid(!!emailValid && !!passwordValid);
-  }, [emailValid, passwordValid]);
-
   return (
-    <form onSubmit={onSubmit} className={styles.container}>
-      <h2 className="text text_type_main-medium">Вход</h2>
-      {emailField}
-      {passwordField}
-      {error && <p className={styles.error}>{error}</p>}
-      <Button
-        htmlType="submit"
-        type="primary"
-        size="medium"
-        disabled={!formValid || loading}
-      >
-        Войти
-      </Button>
-
-      <div className={styles.links}>
-        <div className="mb-4">
-          <span className="mr-2 text text_type_main-default text_color_inactive">
-            Вы — новый пользователь?
-          </span>
-          <Link to={REGISTER_ROUTE} className={styles.link}>
-            Зарегистрироваться
-          </Link>
-        </div>
-
-        <div className="mb-4">
-          <span className="mr-2 text text_type_main-default text_color_inactive">
-            Забыли пароль?
-          </span>
-          <Link to={FORGOT_PASSWORD_ROUTE} className={styles.link}>
-            Восстановить пароль
-          </Link>
-        </div>
-      </div>
-    </form>
+    <main className={`${styles.main}`}>
+      <h1 className='text text_type_main-medium'>Вход</h1>
+      <form className={`${styles.form} mt-6 mb-20`} onSubmit={handleSubmit}>
+        <EmailInput onChange={onChangeFormData} value={formData.email} name='email' isIcon={false} />
+        <PasswordInput onChange={onChangeFormData} value={formData.password} name='password' />
+        <Button htmlType='submit' type='primary' size='medium'>
+          Войти
+        </Button>
+      </form>
+      <span className='text text_type_main-default text_color_inactive'>
+        Вы — новый пользователь? <Link to='/register' state={{ from: location.state?.from }}>Зарегистрироваться</Link>
+      </span>
+      <span className='text text_type_main-default text_color_inactive mt-4'>
+        Забыли пароль? <Link to='/forgot-password'>Восстановить пароль</Link>
+      </span>
+    </main>
   );
 }

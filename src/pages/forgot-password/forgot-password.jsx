@@ -1,11 +1,10 @@
 import {
   Button,
-  Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
-import { passwordReset } from "../../utils/api/password-reset";
+import { passwordReset } from "../../utils/api";
 import { useFormFieldEmail } from "../../copmonents/form-fields/email/email";
 import { LOGIN_ROUTE, RESET_PASSWORD_ROUTE } from "../../const/routes";
 

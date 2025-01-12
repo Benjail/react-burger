@@ -8,7 +8,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   appendBunCart, appendIngredientCart, removeCart, sortCart
-} from "../../services/slices/cart";
+} from "../../services/slices/cart-slice";
 import { ingredientPropType } from "../../utils/types";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
@@ -65,7 +65,6 @@ export default function BurgerConstructor() {
   };
   const onSortItem = (prevUuid, newUuid) => {
     if (prevUuid === newUuid) return;
-
     dispatch(
       sortCart({
         prevUuid,
@@ -84,6 +83,9 @@ export default function BurgerConstructor() {
         orderIngredients.map(({ id, uuid }) => {
           const ingredient = ingredientsMap.get(id);
 
+          if (!ingredient) {
+            return null;
+          }
           return (
             <React.Fragment key={uuid}>
               <IngredientItem
@@ -118,11 +120,15 @@ export default function BurgerConstructor() {
 }
 
 function IngredientItem(props) {
+  const { ingredient } = props;
   const [, drag] = useDrag({
     type: "order",
     item: { uuid: props.uuid },
   });
 
+  if (!ingredient) {
+    return null;
+  }
   return (
     <DropTarget onDrop={props.onSortItem} accept="order">
       <div ref={drag} className={styles.item}>
@@ -130,9 +136,9 @@ function IngredientItem(props) {
           <DragIcon type="primary" />
         </div>
         <ConstructorElement
-          text={props.ingredient.name}
-          thumbnail={props.ingredient.image_mobile}
-          price={props.ingredient.price}
+          text={ingredient.name}
+          thumbnail={ingredient.image_mobile}
+          price={ingredient.price}
           handleClose={props.onDelete}
         />
       </div>

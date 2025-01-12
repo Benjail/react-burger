@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../services/slices/profile";
+import { logout } from "../../../services/slices/profile-slice";
 import { useNavigate } from "react-router-dom";
 import styles from "./details.module.css";
 import { LOGIN_ROUTE } from "../../../const/routes";
@@ -21,7 +21,7 @@ export function LogoutPage() {
     if (isLogout) {
       navigate(LOGIN_ROUTE, { replace: true });
     }
-  }, [isLogout]);
+  }, [isLogout, navigate]);
 
   return loading ? "Выход..." : <p className={styles.error}>{error}</p>;
 }

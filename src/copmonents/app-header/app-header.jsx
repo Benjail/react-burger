@@ -1,4 +1,5 @@
 import styles from './app-header.module.css';
+import { useSelector } from 'react-redux';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from "react-router-dom";
 import {
@@ -11,7 +12,7 @@ function LinkItem({ icon: Icon, to, text }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`
+        `${styles.menuItem} ${(isActive ? `${styles.menuItem}` : `${styles.menuItem} ${styles.inactive}`)}`
       }
       end
     >
@@ -26,6 +27,8 @@ function LinkItem({ icon: Icon, to, text }) {
 }
 
 export default function AppHeader() {
+  
+  const user = useSelector((state) => state.profile.user);
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -45,7 +48,7 @@ export default function AppHeader() {
             <LinkItem
               icon={ProfileIcon}
               to={PROFILE_ROUTE}
-              text="Личный кабинет"
+              text = { user ? user.name : "Личный кабинет"}
             />
           </ul>
         </nav>

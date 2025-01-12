@@ -1,7 +1,7 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { confirmReset } from "../../utils/api/password-reset";
+import {confirmReset}  from "../../utils/api";
 import { useFormFieldPassword } from "../../copmonents/form-fields/password/password";
 import { useFormFieldText } from "../../copmonents/form-fields/text/text";
 import styles from "./reset-password.module.css";
@@ -49,7 +49,7 @@ export function ResetPasswordPage() {
     if (!state?.fromForgotPassword) {
       navigate(FORGOT_PASSWORD_ROUTE, { replace: true });
     }
-  }, [state]);
+  }, [state, navigate]);
 
   useEffect(() => {
     setFormValid(codeValid && passwordValid);
