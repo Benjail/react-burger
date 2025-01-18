@@ -33,10 +33,10 @@ import BurgerIngredientPage from "../pages/burger-ingredient/burger-ingredient-p
 
 
 export default function App() {
-  const overlayError = useSelector((state) => state.error?.overlayError || null);
+  const overlayError = useSelector((state:any) => state.error?.overlayError || null);
   const location = useLocation();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.profile.user);
+  const dispatch :any = useDispatch();
+  const user = useSelector((state:any) => state.profile.user);
   console.log(user);
 
   useEffect(() => {

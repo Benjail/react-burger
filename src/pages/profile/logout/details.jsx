@@ -23,5 +23,7 @@ export function LogoutPage() {
     }
   }, [isLogout, navigate]);
 
-  return loading ? "Выход..." : <p className={styles.error}>{error}</p>;
+  return <div>
+      {loading ? "Выход..." : error ? <p className={styles.error}>{error}</p> : null};
+  </div>
 }

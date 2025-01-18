@@ -7,7 +7,14 @@ import {
   PROFILE_ORDERS_ROUTE,
   PROFILE_ROUTE,
 } from "../../const/routes";
-function LinkItem({ icon: Icon, to, text }) {
+
+interface LinkItemProps {
+  icon?: React.FC<{ type: "primary" | "secondary" }>;
+  to: string;
+  text: string;
+}
+
+function LinkItem({ icon: Icon, to, text  }: LinkItemProps) {
   return (
     <NavLink
       to={to}
@@ -28,7 +35,7 @@ function LinkItem({ icon: Icon, to, text }) {
 
 export default function AppHeader() {
   
-  const user = useSelector((state) => state.profile.user);
+  const user = useSelector((state: any) => state.profile.user);
   return (
     <header className={styles.header}>
       <div className={styles.container}>

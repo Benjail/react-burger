@@ -14,11 +14,15 @@ export default function BurgerIngredientPage() {
   }, [ingredients, productId]);
 
   return (
-    product && (
-      <div className={styles.container}>
-        <p className="text text_type_main-large">Детали ингредиента</p>
-        <IngredientDetails ingredient={product} />
+      <div>
+        {product ? (
+        <div className={styles.container}>
+          <p className="text text_type_main-large">Детали ингредиента</p>
+          <IngredientDetails ingredient={product} />
+        </div>
+        ): (
+          <p></p>
+        )}
       </div>
-    )
   );
 }
