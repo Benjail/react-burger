@@ -8,18 +8,18 @@ import {
   PROFILE_ROUTE,
 } from "../../const/routes";
 
-interface LinkItemProps {
+interface Props {
   icon?: React.FC<{ type: "primary" | "secondary" }>;
   to: string;
   text: string;
 }
 
-function LinkItem({ icon: Icon, to, text  }: LinkItemProps) {
+const LinkItem = ({ icon: Icon, to, text }: Props): React.JSX.Element => {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `${styles.menuItem} ${(isActive ? `${styles.menuItem}` : `${styles.menuItem} ${styles.inactive}`)}`
+        `${styles.menuItem} ${!isActive ? styles.inactive : ""}`
       }
       end
     >
@@ -31,10 +31,10 @@ function LinkItem({ icon: Icon, to, text  }: LinkItemProps) {
       )}
     </NavLink>
   );
-}
+};
 
-export default function AppHeader() {
-  
+
+export const AppHeader = (): React.JSX.Element => {
   const user = useSelector((state: any) => state.profile.user);
   return (
     <header className={styles.header}>

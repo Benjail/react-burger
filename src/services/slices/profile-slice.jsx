@@ -5,19 +5,17 @@ export const ACCESS_TOKEN_COOKIE = "accessToken";
 export const REFRESH_TOKEN_KEY = "refreshToken";
 
 const initialState = {
-  email: "",
-  name: "",
   request: {
     error: null,
-    loading: false,
-    fetched: false,
+    loading: false
   },
   user: null, 
   isAuthChecked: false
 };
 
-export const login = createAsyncThunk('profile/login', async (data) => {
-  const res = await loginApi(data);
+export const login = createAsyncThunk('profile/login', 
+  async (formData) => {
+  const res = await loginApi(formData);
   localStorage.setItem('accessToken', res.accessToken);
   localStorage.setItem('refreshToken', res.refreshToken);
   return res.user;

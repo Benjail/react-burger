@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './copmonents/app';
+import { App } from './copmonents/app';
 import reportWebVitals from './reportWebVitals';
 import store from './services/slices';
 import { BrowserRouter } from "react-router-dom";

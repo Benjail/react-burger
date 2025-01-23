@@ -1,15 +1,14 @@
-import AppHeader from './app-header/app-header';
+import { AppHeader } from './app-header/app-header';
 import styles from './app.module.css';
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect} from 'react'; //,useHistory 
+import { useEffect} from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
 import BurgerIngredientModal from "../pages/burger-ingredient/burger-ingredient-modal";
 import { ForgotPasswordPage } from "../pages/forgot-password/forgot-password";
 import { HomePage } from "../pages/home/home";
-import  LoginPage  from '../pages/login/login';
+import { LoginPage } from '../pages/login/login';
 import { NotFoundPage } from "../pages/not-found/not-found";
-import { ProfileDetailsPage } from "../pages/profile/details/details";
-import { LogoutPage } from "../pages/profile/logout/details";
+import{ LogoutPage } from "../pages/profile/logout/details";
 import { ProfileOrdersPage } from "../pages/profile/orders/orders";
 import { ProfilePage } from "../pages/profile/profile";
 import { RegisterPage } from "../pages/register/register";
@@ -31,11 +30,10 @@ import {
 } from "../const/routes";
 import BurgerIngredientPage from "../pages/burger-ingredient/burger-ingredient-page";
 
-
-export default function App() {
+export const App = (): React.JSX.Element => {
   const overlayError = useSelector((state:any) => state.error?.overlayError || null);
   const location = useLocation();
-  const dispatch :any = useDispatch();
+  const dispatch: any = useDispatch();
   const user = useSelector((state:any) => state.profile.user);
   console.log(user);
 
@@ -49,15 +47,13 @@ export default function App() {
     <ErrorBoundary error={overlayError}>
       <div className={styles.wrapper}>
         <AppHeader />
-
         <Routes location={location.state?.backgroundLocation || location}>
           <Route path={HOME_ROUTE} element={<HomePage />} />
           <Route path={LOGIN_ROUTE} element={<ProtectedRouteElement onlyUnAuth={true} element={<LoginPage />} />} />
           <Route path={REGISTER_ROUTE} element={ <ProtectedRouteElement onlyUnAuth={true} element={<RegisterPage />} />} />       
           <Route path={FORGOT_PASSWORD_ROUTE} element={ <ProtectedRouteElement onlyUnAuth={true} element={<ForgotPasswordPage />}  /> }/>
           <Route path={RESET_PASSWORD_ROUTE} element={ <ProtectedRouteElement onlyUnAuth={true} element={<ResetPasswordPage />}/> } />
-          <Route path={PROFILE_ROUTE} element={<ProtectedRouteElement element={<ProfilePage />} />}>
-            <Route index element={<ProfileDetailsPage />} /> 
+          <Route path={PROFILE_ROUTE} element={<ProtectedRouteElement onlyUnAuth = {false} element={<ProfilePage />} />}>
             <Route path= {PROFILE_ORDERS_ROUTE} element={<ProfileOrdersPage />} /> 
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} /> 
           </Route>

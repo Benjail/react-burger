@@ -27,7 +27,6 @@
   width: 1000px;
 }
 
-
 .itemDrag {
   composes: mr-2 from global;
   display: flex;
