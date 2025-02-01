@@ -4,39 +4,28 @@ import useFormData from '../../copmonents/hooks/use-form-data';
 import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { login } from '../../services/slices/profile-slice';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 
 export const LoginPage = (): React.JSX.Element => {
   const { formData, onChangeFormData, checkFormData } = useFormData({ email: '', password: '' });
   const dispatch = useDispatch();
   const location = useLocation();
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isError = (e.target as HTMLFormElement).querySelector('.input__error');
-    if (isError) return;
+    setError(null); 
 
-    if (checkFormData.status) {
-      // @ts-ignore - убрать @ts-ignore, если типизация `dispatch` исправлена
-      dispatch(login(formData))
-        .unwrap()
-        .catch((err: Error) => {
-          const error = Object.assign(document.createElement('p'), {
-            className: 'input__error text_type_main-default',
-            textContent: err.message,
-          });
-          const input = (e.target as HTMLFormElement).querySelector('[name="password"]')?.closest('.input') as HTMLElement;
+    if (!checkFormData.status) {
+      setError(`Поле "${checkFormData.field === 'password'? "Пароль":"Email"}" заполнено неверно.`);
+      return;
+    }
 
-          input.closest('.input__container')?.append(error);
-          setTimeout(() => {
-            error.remove();
-          }, 2000);
-        });
-    } else {
-      (e.target as HTMLFormElement)
-        .querySelector(`[name=${checkFormData.field}]`)
-        ?.closest('.input')
-        ?.classList.add('input_status_error');
+    try {
+      // @ts-ignore
+      await dispatch(login(formData)).unwrap();
+    } catch (err: any) {
+      setError(err.message || 'Произошла ошибка');
     }
   };
 
@@ -46,6 +35,7 @@ export const LoginPage = (): React.JSX.Element => {
       <form className={`${styles.form} mt-6 mb-20`} onSubmit={handleSubmit}>
         <EmailInput onChange={onChangeFormData} value={formData.email} name="email" isIcon={false} />
         <PasswordInput onChange={onChangeFormData} value={formData.password} name="password" />
+        {error && <p className="input__error text_type_main-default">{error}</p>}
         <Button htmlType="submit" type="primary" size="medium">
           Войти
         </Button>
@@ -58,4 +48,4 @@ export const LoginPage = (): React.JSX.Element => {
       </span>
     </main>
   );
-}
+};

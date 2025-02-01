@@ -22,17 +22,17 @@ export type OrderIngredient ={
   uuid: string;
 }
 
-export interface ConstructorIngredient extends Ingredient {
+export interface CartIngredient extends Ingredient {
   id: string;
 }
 
-export type ConstructorIngredients = Array<ConstructorIngredient>;
+export type CartIngredients = Array<CartIngredient>;
 
 export interface FormData {
   [name: string]: string;
 }
 
-export interface User {
+export type User ={
   email: string;
   name: string;
 }
@@ -44,4 +44,32 @@ export type Route = {
 
 export interface ArrayData {
   [name: string]: Array<string>;
+}
+
+export type ServerResponse = {
+  success: boolean;
+};
+
+export type ServerResponseGeneric<T> = ServerResponse & T;
+
+export type ServerOrderResponse = ServerResponseGeneric<{
+  name: string;
+  order: Order;
+}>;
+
+export interface Order {
+  ingredients: Ingredients;
+  _id: string;
+  owner: Owner;
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+  price: number;
+}
+
+export interface Owner extends User {
+  createdAt: string;
+  updatedAt: string;
 }

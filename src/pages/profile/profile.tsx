@@ -12,10 +12,12 @@ export const ProfilePage = (): React.JSX.Element => {
   const navigate = useNavigate();
   const { user } = useSelector((store: any) => store.profile);
   const [disabled, setDisabled] = useState(true);
-  const { formData, onChangeFormData, setFormData } = useFormData({ ...user, password: '' });
+  const { formData, onChangeFormData, setFormData, checkFormData } = useFormData({ ...user, password: '' });
+  const [error, setError] = useState<string | null>(null);
+  const [isShowButtons, setShowButtons] = useState(false);
+
   const dispatch: any = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isShowButtons, setShowButtons] = useState(false);
 
   const handleLogout = (e: MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
@@ -31,24 +33,34 @@ export const ProfilePage = (): React.JSX.Element => {
     setDisabled(true);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(updateUser(formData)).then(() => {
+    setError(null);
+
+    if (!checkFormData.status) {
+      setError(`Поле "${checkFormData.field === 'name' ? 'Имя' : checkFormData.field === 'email' ? 'Email': 'Пароль' }" заполнено неверно.`);
+      return;
+    }
+
+    try {
+      await dispatch(updateUser(formData)).unwrap();
       setFormData({ ...formData, password: '' });
       setShowButtons(false);
-    });
+    } catch (err: any) {
+      setError(err.message || 'Произошла ошибка');
+    }
   };
 
   const handleCancelClick = (e: MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
     setFormData({ ...user, password: '' });
     setShowButtons(false);
+    setError(null);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target;
-    
-    if (user && target.value !== (user[target.name as keyof User] || '')) {
+    onChangeFormData(e);
+    if (user && e.target.value !== (user[e.target.name as keyof User] || '')) {
       setShowButtons(true);
     } else {
       setShowButtons(false);
@@ -69,16 +81,18 @@ export const ProfilePage = (): React.JSX.Element => {
           </NavLink>
         </li>
         <li className={`${styles.item} text text_type_main-medium`}>
-          <span className={`${styles.link} ${styles.inactive}`} onClick={handleLogout} >
+          <span className={`${styles.link} ${styles.inactive}`} onClick={handleLogout}>
             Выход
           </span>
         </li>
-        <span className='text text_type_main-default text_color_inactive mt-20'>В этом разделе вы можете изменить свои персональные данные</span>
+        <span className='text text_type_main-default text_color_inactive mt-20'>
+          В этом разделе вы можете изменить свои персональные данные
+        </span>
       </menu>
       {location.pathname === '/profile' ? (
         <form className={styles.form} onSubmit={handleSubmit}>
           <Input
-            onChange={(e) => onChangeFormData(e, handleChange)}
+            onChange={(e) => handleChange(e)}
             value={formData.name}
             type='text'
             name='name'
@@ -87,9 +101,22 @@ export const ProfilePage = (): React.JSX.Element => {
             ref={inputRef}
             onIconClick={handleIconClick}
             onBlur={handleBlur}
-            disabled={disabled} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          <EmailInput onChange={(e) => onChangeFormData(e, handleChange)} value={formData.email} autoComplete='username' name='email' isIcon={true} />
-          <PasswordInput onChange={(e) => onChangeFormData(e, handleChange)} value={formData.password} autoComplete='new-password' name='password' icon='EditIcon' />
+            disabled={disabled} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}/>
+          <EmailInput
+            onChange={(e) => handleChange(e)}
+            value={formData.email}
+            name='email'
+            autoComplete='username'
+            isIcon={true}
+          />
+          <PasswordInput
+            onChange={(e) => handleChange(e)}
+            value={formData.password}
+            name='password'
+            autoComplete='new-password'
+            icon='EditIcon'
+          />
+          {error && <p className="input__error text_type_main-default">{error}</p>}
           {isShowButtons && (
             <div className={styles.buttons}>
               <span className={`${styles.cancel} ${styles.link} ${styles.inactive} mr-4`} onClick={handleCancelClick}>
@@ -106,4 +133,4 @@ export const ProfilePage = (): React.JSX.Element => {
       )}
     </main>
   );
-}
+};

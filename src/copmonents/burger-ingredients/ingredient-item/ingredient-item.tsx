@@ -5,7 +5,7 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 
 import { openDetails } from '../../../services/slices/ingredients-details-slice';
 import styles from './ingredient-item.module.css';
-import { ConstructorIngredient, Ingredient } from '../../../utils/types';
+import { CartIngredient, Ingredient } from '../../../utils/types';
 
 interface IngredientItemProps {
   ingredient: Ingredient;
@@ -18,7 +18,7 @@ const IngredientItem: FC<IngredientItemProps> = ({ ingredient }): React.JSX.Elem
     if (ingredient.type === 'bun') {
       return bun && bun._id === ingredient._id ? 2 : null;
     } else {
-      return ingredients.filter((item: ConstructorIngredient) => item._id === ingredient._id).length || null;
+      return ingredients.filter((item: CartIngredient) => item._id === ingredient._id).length || null;
     }
   }, [bun, ingredients, ingredient.type, ingredient._id]);
 
