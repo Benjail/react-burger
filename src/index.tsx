@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './copmonents/App';
+import { App } from './copmonents/app';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from "react-redux";
-import {configureStore} from "./services/store";
+import store from './services/slices';
 import { BrowserRouter } from "react-router-dom";
-const store = configureStore({});
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+import { Provider } from "react-redux";
+
+const root = ReactDOM.createRoot( document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>

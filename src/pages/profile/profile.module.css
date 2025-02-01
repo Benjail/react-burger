@@ -1,11 +1,38 @@
-.container {
-  display: flex;
-  padding-top: 120px;
-  justify-content: center;
-  column-gap: 60px;
+.main {
+  display: grid;
+  grid-template-columns: 320px auto;
+  gap: 60px;
+  padding: 120px 0 0 340px;
 }
 
-.pageContainer {
+.menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+}
+
+.link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link.inactive {
+  color: var(--text-inactive-color);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   max-width: 480px;
-  width: 100%;
+}
+
+.buttons {
+  align-self: flex-end;
 }
