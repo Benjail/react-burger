@@ -17,6 +17,7 @@ import {
   import {Modal} from "../modal/modal";
   import {OrderDetails} from "../order-details/order-details";
   import styles from "./order.module.css";
+import { CartIngredient } from "../../utils/types";
   
   const initialState = { totalPrice: 0 };
   function totalPriceReducer(state: any, action: any) {
@@ -24,6 +25,7 @@ import {
       case "reset":
         return { totalPrice: 0 };
       case "bun":
+        console.log(`Цена булки: ${action.payload.price}`);
         return { totalPrice: state.totalPrice + action.payload.price * 2 };
       case "ingredient":
         return { totalPrice: state.totalPrice + action.payload.price };
@@ -43,12 +45,7 @@ import {
   
   type Props = {
     bunItem: string;
-    orderIngredients: OrderIngredient[];
-  }
-
-  type OrderIngredient = {
-    id: string;
-    uuid: string;
+    cartIngredients: CartIngredient[];
   }
 
   const OrderTotal = (props: Props): React.JSX.Element => {
@@ -92,15 +89,15 @@ import {
         }
       }
       
-      props.orderIngredients.forEach(({ id }) => {
+      props.cartIngredients.forEach(({ _id }) => {
         totalPriceDispatch({
           type: "ingredient",
-          payload: ingredientsMap.get(id),
+          payload: ingredientsMap.get(_id),
         });
       });
   
       setValid(Boolean(props.bunItem));
-    }, [ingredientsMap, props.bunItem, props.orderIngredients]);
+    }, [ingredientsMap, props.bunItem, props.cartIngredients]);
 
     const handleSubmitOrder = useCallback(() => {
       if (!user) {
@@ -109,14 +106,14 @@ import {
     
     const orderListIds = [
       props.bunItem, 
-      ...props.orderIngredients.map(({ id }) => id), 
+      ...props.cartIngredients.map(({ _id }) => _id), 
     ].filter(Boolean); 
       
     dispatch(
       //@ts-ignore - временно игнорируем ошибку, если она всё ещё появляется
       createOrder(orderListIds)
     );
-  }, [user, navigate, location, dispatch, props.bunItem, props.orderIngredients]);
+  }, [user, navigate, location, dispatch, props.bunItem, props.cartIngredients]);
     
 
     const onCompleteModalClose = useCallback(() => {

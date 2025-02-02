@@ -1,7 +1,7 @@
-import { CartIngredient, CartIngredients, Ingredient, Ingredients, User, ServerOrderResponse } from './types';
+import {Ingredient, Ingredients, User, ServerOrderResponse, CartIngredients } from './types';
 
 export interface CartStore {
-  bun: CartIngredient | null;
+  bun: string | null;
   ingredients: CartIngredients;
 }
 
@@ -17,13 +17,13 @@ export interface BurgerIngredientStore {
 }
 
 export interface IngredientDetailsStore {
-  data: Ingredient | null;
+  ingredient: Ingredient | null;
 }
 
 export interface OrderDetailsStore {
   data: ServerOrderResponse | null;
-  isLoading: boolean;
-  isError: boolean;
+  loading: boolean;
+  error: boolean;
 }
 
 export interface Store {

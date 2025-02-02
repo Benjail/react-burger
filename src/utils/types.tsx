@@ -17,15 +17,10 @@ export type Ingredients = Ingredient[];
 
 export type IngredientType = 'bun' | 'sauce' | 'main';
 
-export type OrderIngredient ={
-  id: string;
+export type CartIngredient ={
+  _id: string;
   uuid: string;
 }
-
-export interface CartIngredient extends Ingredient {
-  id: string;
-}
-
 export type CartIngredients = Array<CartIngredient>;
 
 export interface FormData {

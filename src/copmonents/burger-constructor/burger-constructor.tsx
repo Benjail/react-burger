@@ -11,12 +11,12 @@ import {
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
 import { nanoid } from "@reduxjs/toolkit";
-import { Ingredient, OrderIngredient } from "../../utils/types";
+import { Ingredient, CartIngredient } from "../../utils/types";
 
 const constructorDataSelector = (state: any) => ({
   ingredients: state.ingredients?.data,
   bunIngredient: state.cart.bun,
-  orderIngredients: state.cart.ingredients as OrderIngredient[],
+  cartIngredients: state.cart.ingredients as CartIngredient[],
 });
 
 type BunItemProps = {
@@ -41,7 +41,7 @@ type IngredientItemProps = {
 
 export const BurgerConstructor = (): React.JSX.Element  =>{
   const dispatch = useDispatch();
-  const { ingredients, bunIngredient, orderIngredients } = useSelector(
+  const { ingredients, bunIngredient, cartIngredients } = useSelector(
     constructorDataSelector
   );
   const [ingredientsMap, setIngredientsMap] = useState(new Map());
@@ -58,7 +58,7 @@ export const BurgerConstructor = (): React.JSX.Element  =>{
   const onDropIngredient = (item: Ingredient) => {
     dispatch(
       appendIngredientCart({
-        id: item._id,
+        _id: item._id,
         uuid: nanoid(),
       })
     );
@@ -98,9 +98,9 @@ export const BurgerConstructor = (): React.JSX.Element  =>{
       onDrop={onDropIngredient}
       className={styles.scrollItems}
     >
-      {orderIngredients.length ? (
-        orderIngredients.map(({ id, uuid }) => {
-          const ingredient = ingredientsMap.get(id);
+      {cartIngredients.length ? (
+        cartIngredients.map(({ _id, uuid }) => {
+          const ingredient = ingredientsMap.get(_id);
 
           if (!ingredient) {
             return null;
@@ -133,7 +133,7 @@ export const BurgerConstructor = (): React.JSX.Element  =>{
       <FirstBunItem />
       <ScrollItems />
       <LastBunItem />
-      <Order bunItem={bunIngredient} orderIngredients={orderIngredients}/>
+      <Order bunItem={bunIngredient} cartIngredients={cartIngredients}/>
     </div>
   );
 }
