@@ -114,7 +114,7 @@ const BurgerIngredients = () => {
                   .filter((ingredient) => ingredient.type === 'sauce')
                    //@ts-ignore
                   .map((ingredient) => (
-                    <Link className={styles.link} key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }}>
+                    <Link className={styles.link} key={ingredient._id} to={`/ingredient/${ingredient._id}`} state={{ backgroundLocation: location }}>
                       <IngredientItem key={ingredient._id} ingredient={ingredient} />
                     </Link>
                   ))}

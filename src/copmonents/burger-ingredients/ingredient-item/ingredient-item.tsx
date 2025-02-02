@@ -25,8 +25,8 @@ const IngredientItem: FC<IngredientItemProps> = ({ ingredient }): React.JSX.Elem
   const { name, image, price } = ingredient;
 
   const [, dragRef] = useDrag({
-    type: 'ingredient',
-    item: { ingredient },
+    type: ingredient.type ==='bun' ? 'bun' : 'ingredient',
+    item:  ingredient ,
   });
 
   const dispatch = useDispatch();
