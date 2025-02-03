@@ -5,6 +5,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
     data: [],
     loading: false,
+    error: false
   };
 
 const ingredientsSlice = createSlice({
@@ -13,9 +14,9 @@ const ingredientsSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(getIngredients.pending, (state, action) => {state.loading = true; state.error = null;})
+            .addCase(getIngredients.pending, (state, action) => {state.loading = true; state.error = false;})
             .addCase(getIngredients.fulfilled, (state, action) => {state.data = action.payload.data; state.loading = false; })            
-            .addCase(getIngredients.rejected, (state, action) => {state.error = action.error.message; state.loading = false; })
+            .addCase(getIngredients.rejected, (state, action) => {state.error = true; state.loading = false; })
     }
 });
 

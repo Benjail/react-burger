@@ -1,6 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {createOrderApi} from "../../utils/api";
 import { resetCart } from "./cart-slice";
+import { OrderDetailsStore } from "../../utils/store";
+import { Order, ServerResponseGeneric } from "../../utils/types";
 
 export const createOrder = createAsyncThunk(
   "order/create",
@@ -15,8 +17,8 @@ const initialState = {
   data: null,
   loading: false,
   error: false,
-  open: false,
-};
+  open: false
+} satisfies OrderDetailsStore as OrderDetailsStore;
 
 const orderSlice = createSlice({
   name: "order",
@@ -31,9 +33,10 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createOrder.pending, (state) => { state.loading = true; state.error = false;})
-      .addCase(createOrder.fulfilled, (state, action) => { state.data = action.payload; state.loading = false; state.open = true;})
-      .addCase(createOrder.rejected, (state, action) => { state.error = action.payload; state.loading = false;});
+      .addCase(createOrder.pending, (state) => { state.loading = true;})
+      .addCase(createOrder.fulfilled, (state, action: PayloadAction<ServerResponseGeneric<{name: string;order: Order;}>> ) => 
+        { state.data = action.payload; state.loading = false; state.open = true;})
+      .addCase(createOrder.rejected, (state) => {  state.loading = false; state.data = null;});
   },
 });
 

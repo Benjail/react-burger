@@ -12,8 +12,8 @@ export interface UserStore {
 
 export interface BurgerIngredientStore {
   data: Ingredients | null;
-  isLoading: boolean;
-  isError: boolean;
+  loading: boolean;
+  error: boolean;
 }
 
 export interface IngredientDetailsStore {
@@ -24,6 +24,7 @@ export interface OrderDetailsStore {
   data: ServerOrderResponse | null;
   loading: boolean;
   error: boolean;
+  open: boolean;
 }
 
 export interface Store {
