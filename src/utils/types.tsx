@@ -23,24 +23,6 @@ export type CartIngredient ={
 }
 export type CartIngredients = Array<CartIngredient>;
 
-export interface FormData {
-  [name: string]: string;
-}
-
-export type User ={
-  email: string;
-  name: string;
-}
-
-export type Route = {
-  to: string;
-  text: string;
-}
-
-export interface ArrayData {
-  [name: string]: Array<string>;
-}
-
 export type ServerResponse = {
   success: boolean;
 };
@@ -67,4 +49,18 @@ export interface Order {
 export interface Owner extends User {
   createdAt: string;
   updatedAt: string;
+}
+
+export type User ={
+  email: string;
+  name: string;
+}
+
+export interface FormData {
+  [name: string]: string;
+}
+
+export type Route = {
+  to: string;
+  text: string;
 }

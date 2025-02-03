@@ -5,7 +5,8 @@ export interface CartStore {
   ingredients: CartIngredients;
 }
 
-export interface UserStore {
+export interface ProfileStore {
+  loading: boolean;
   user: User | null;
   isAuthChecked: boolean;
 }
@@ -28,7 +29,7 @@ export interface OrderDetailsStore {
 }
 
 export interface Store {
-  user: UserStore;
+  user: ProfileStore;
   burgerConstructor: CartStore;
   burgerIngredients: BurgerIngredientStore;
   ingredientDetails: IngredientDetailsStore;

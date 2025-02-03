@@ -16,4 +16,6 @@ const ingredientDetailsSlice = createSlice({
 });
 
 export const { openDetails, closeDetails } = ingredientDetailsSlice.actions;
+type ingredientDetailsActionCreators = typeof ingredientDetailsSlice.actions;
+export type ingredientDetailsActions = ReturnType<ingredientDetailsActionCreators[keyof ingredientDetailsActionCreators]>;
 export default ingredientDetailsSlice;

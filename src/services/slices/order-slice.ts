@@ -41,4 +41,6 @@ const orderSlice = createSlice({
 });
 
 export const { openOrder, closeOrder } = orderSlice.actions;
+type orderActionCreators = typeof orderSlice.actions;
+export type orderDetailsActions = ReturnType<orderActionCreators[keyof orderActionCreators]>;
 export default orderSlice;

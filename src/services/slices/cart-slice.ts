@@ -26,4 +26,6 @@ const cartSlice = createSlice({
 });
 
 export const { appendBunCart, appendIngredientCart, removeCart, sortCart, resetCart } = cartSlice.actions;
+type cartActionCreators = typeof cartSlice.actions;
+export type cartDetailsActions = ReturnType<cartActionCreators[keyof cartActionCreators]>;
 export default cartSlice;
