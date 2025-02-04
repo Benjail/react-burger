@@ -1,6 +1,6 @@
 import { AppHeader } from './app-header/app-header';
 import styles from './app.module.css';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks/hooks";
 import { useEffect} from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
 import BurgerIngredientModal from "../pages/burger-ingredient/burger-ingredient-modal";
@@ -33,12 +33,9 @@ import BurgerIngredientPage from "../pages/burger-ingredient/burger-ingredient-p
 export const App = (): React.JSX.Element => {
   const overlayError = useSelector((state:any) => state.error?.overlayError || null);
   const location = useLocation();
-  const dispatch: any = useDispatch();
-  const user = useSelector((state:any) => state.profile.user);
-  console.log(user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("App mounted. Dispatching checkUserAuth...");
     dispatch(getIngredients());
     dispatch(checkUserAuth());
   }, [dispatch]);

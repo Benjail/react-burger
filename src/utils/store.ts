@@ -9,6 +9,7 @@ export interface ProfileStore {
   loading: boolean;
   user: User | null;
   isAuthChecked: boolean;
+  error: boolean;
 }
 
 export interface BurgerIngredientStore {

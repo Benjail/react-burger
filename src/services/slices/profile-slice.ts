@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import { loginApi, logoutApi, registerApi, requestUpdateUser, requestUser } from '../../utils/api';
 import { ProfileStore } from "../../utils/store";
+import { FormData } from "../../utils/types";
 
 export const ACCESS_TOKEN_COOKIE = "accessToken";
 export const REFRESH_TOKEN_KEY = "refreshToken";
@@ -8,18 +9,19 @@ export const REFRESH_TOKEN_KEY = "refreshToken";
 const initialState: ProfileStore = {
   user: null, 
   isAuthChecked: false,
-  loading: false
+  loading: false,
+  error: false
 };
 
 export const login = createAsyncThunk('profile/login', 
-  async (formData) => {
+  async (formData: FormData) => {
   const res = await loginApi(formData);
   localStorage.setItem('accessToken', res.accessToken);
   localStorage.setItem('refreshToken', res.refreshToken);
   return res.user;
 });
 
-export const register = createAsyncThunk('profile/register', async (data) => {
+export const register = createAsyncThunk('profile/register', async (data: FormData) => {
   const res = await registerApi(data);
   localStorage.setItem('accessToken', res.accessToken);
   localStorage.setItem('refreshToken', res.refreshToken);

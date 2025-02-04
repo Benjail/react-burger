@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../services/hooks/hooks';
 import { useDrag } from 'react-dnd';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -12,11 +12,11 @@ interface IngredientItemProps {
 }
 
 const IngredientItem: FC<IngredientItemProps> = ({ ingredient }): React.JSX.Element => {
-  const { bun, ingredients } = useSelector((store: any) => store.cart);
+  const { bun, ingredients } = useSelector((store) => store.cart);
 
   const counter = useMemo(() => {
     if (ingredient.type === 'bun') {
-      return bun && bun._id === ingredient._id ? 2 : null;
+      return bun && bun === ingredient._id ? 2 : null;
     } else {
       return ingredients.filter((item: CartIngredient) => item._id === ingredient._id).length || null;
     }

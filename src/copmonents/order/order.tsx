@@ -12,12 +12,12 @@ import {
   } from "react";
   
   import { useLocation, useNavigate } from 'react-router-dom';
-  import { useDispatch, useSelector } from "react-redux";
+  import { useDispatch, useSelector } from "../../services/hooks/hooks";
   import { closeOrder, createOrder } from "../../services/slices/order-slice";
   import {Modal} from "../modal/modal";
   import {OrderDetails} from "../order-details/order-details";
   import styles from "./order.module.css";
-import { CartIngredient } from "../../utils/types";
+  import { CartIngredient } from "../../utils/types";
   
   const initialState = { totalPrice: 0 };
   function totalPriceReducer(state: any, action: any) {
@@ -25,7 +25,6 @@ import { CartIngredient } from "../../utils/types";
       case "reset":
         return { totalPrice: 0 };
       case "bun":
-        console.log(`Цена булки: ${action.payload.price}`);
         return { totalPrice: state.totalPrice + action.payload.price * 2 };
       case "ingredient":
         return { totalPrice: state.totalPrice + action.payload.price };
@@ -33,29 +32,22 @@ import { CartIngredient } from "../../utils/types";
         throw new Error(`Wrong type of action: ${action.type}`);
     }
   }
-  
-  const orderDataSelector = (state: any) => ({
-    ingredients: state.ingredients.data,
-    order: state.order.data,
-    orderLoading: state.order.loading,
-    error: state.order.error,
-    orderOpen: state.order.open,
-    user: state.profile.user
-  });
-  
+
   type Props = {
-    bunItem: string;
+    bunItem: string | null;
     cartIngredients: CartIngredient[];
   }
 
   const OrderTotal = (props: Props): React.JSX.Element => {
-    const { ingredients, order, orderLoading, error, orderOpen, user } =
-      useSelector(orderDataSelector);
+    const ingredients  = useSelector((store) => store.ingredients.data);
+    const user = useSelector((store) => store.profile.user);
+    const order = useSelector((store) => store.order);
 
     const ingredientsMap = useMemo(
       () =>
-        //@ts-ignore
-        new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
+        ingredients ?
+      new Map(ingredients.map((ingredient) => [ingredient._id, ingredient]))
+      : new Map(),
       [ingredients]
     );
     const [valid, setValid] = useState(false);
@@ -110,7 +102,6 @@ import { CartIngredient } from "../../utils/types";
     ].filter(Boolean); 
       
     dispatch(
-      //@ts-ignore - временно игнорируем ошибку, если она всё ещё появляется
       createOrder(orderListIds)
     );
   }, [user, navigate, location, dispatch, props.bunItem, props.cartIngredients]);
@@ -122,7 +113,7 @@ import { CartIngredient } from "../../utils/types";
   
     return (
       <>
-        {error && <p className={styles.error}>{error}</p>}
+        {order.error && <p className={styles.error}>{order.error}</p>}
         <div className={styles.total}>
           <p className="text text_type_digits-medium mr-2">
             {totalPriceState.totalPrice}
@@ -135,14 +126,14 @@ import { CartIngredient } from "../../utils/types";
             type="primary"
             size="large"
             extraClass="ml-10"
-            disabled={orderLoading || !valid}
+            disabled={order.loading || !valid}
             onClick={handleSubmitOrder}
           >
             Оформить заказ
           </Button>
-          {orderOpen && (
+          {order.open && order.data?.order.number &&(
             <Modal onClose={onCompleteModalClose} header={""}>
-              <OrderDetails order={order.order?.number} />
+              <OrderDetails order={order.data.order.number} />
             </Modal>
           )}
         </div>

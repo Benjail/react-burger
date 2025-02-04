@@ -1,6 +1,6 @@
 import { FormEvent,useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks/hooks';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormData from '../../copmonents/hooks/use-form-data';
 import styles from './register.module.css';
@@ -10,7 +10,7 @@ export const RegisterPage = (): React.JSX.Element => {
   const { formData, onChangeFormData, checkFormData } = useFormData({ name: '', email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const location = useLocation();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -19,11 +19,11 @@ export const RegisterPage = (): React.JSX.Element => {
 
     if (checkFormData.status) {
       try {
-        //@ts-ignore
         dispatch(register(formData)).unwrap();
         navigate(location.state?.from ?? '/', { replace: true });
-      } catch (err: any) {
-        setError(err.message || 'Произошла ошибка');
+      } catch (err) {
+        if (err instanceof Error)
+          setError(err.message || 'Произошла ошибка');
       }
     } else {
       setError(`Поле "${checkFormData.field === 'password' ? 'Пароль' : checkFormData.field === 'email' ? 'Email' : 'Имя'}" заполнено неверно.`);

@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Ingredient } from "../../utils/types";
 import { IngredientDetailsStore } from "../../utils/store";
 
-const initialState = {
+const initialState: IngredientDetailsStore  = {
   ingredient: null,
-} satisfies IngredientDetailsStore as IngredientDetailsStore;
+};
 
 const ingredientDetailsSlice = createSlice({
   name: "details",
