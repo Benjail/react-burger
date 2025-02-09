@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import { loginApi, logoutApi, registerApi, requestUpdateUser, requestUser } from '../../utils/api';
 import { ProfileStore } from "../../utils/store";
-import { FormData } from "../../utils/types";
+import { FormData, User } from "../../utils/types";
 
 export const ACCESS_TOKEN_COOKIE = "accessToken";
 export const REFRESH_TOKEN_KEY = "refreshToken";
@@ -101,7 +101,7 @@ export const profileSlice = createSlice({
       state.loading = true;
     })
     .addCase(getUser.fulfilled, (state, action) => {
-      state.user = action.payload.user;
+      state.user = action.payload as (User | null);
       state.loading = false;
     })
     .addCase(getUser.rejected, (state) => {
@@ -110,7 +110,7 @@ export const profileSlice = createSlice({
     })
     
     .addCase(updateUser.fulfilled, (state, action) => {
-      state.user = action.payload.user;
+      state.user = action.payload?.user as (User | null) ;
     })
 
     //Обработка checkUserAuth

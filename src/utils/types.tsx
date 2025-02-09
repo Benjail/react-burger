@@ -1,3 +1,7 @@
+export interface IngredientWithAmount extends Ingredient {
+  amount: number;
+}
+
 export interface Ingredient {
     _id: string;
     name: string;
@@ -23,27 +27,20 @@ export type CartIngredient ={
 }
 export type CartIngredients = Array<CartIngredient>;
 
-export type ServerResponse = {
-  success: boolean;
-};
 
-export type ServerResponseGeneric<T> = ServerResponse & T;
+export type Orders = Array<Order>;
 
-export type ServerOrderResponse = ServerResponseGeneric<{
-  name: string;
-  order: Order;
-}>;
 
 export interface Order {
-  ingredients: Ingredients;
+  ingredients: string[];
   _id: string;
-  owner: Owner;
-  status: string;
+  status: 'done' | 'pending' | 'created';
   name: string;
   createdAt: string;
   updatedAt: string;
   number: number;
-  price: number;
+  owner?: Owner;
+  price?: number;
 }
 
 export interface Owner extends User {
@@ -60,7 +57,65 @@ export interface FormData {
   [name: string]: string;
 }
 
+export interface ArrayData {
+  [name: string]: Array<string>;
+}
+
 export type Route = {
   to: string;
   text: string;
 }
+
+
+export enum Statuses {
+  done = 'Выполнен',
+  created = 'Создан',
+  pending = 'Готовится',
+  canceled = 'Отменен',
+}
+
+export type ServerResponse = {
+  success: boolean;
+};
+
+export type ServerResponseGeneric<T> = ServerResponse & T;
+
+export type ServerMessageResponse = ServerResponseGeneric<{
+  message: string;
+}>;
+
+export type ServerRefreshResponse = ServerResponseGeneric<{
+  refreshToken: string;
+  accessToken: string;
+}>;
+
+export type ServerUserResponse = ServerRefreshResponse & {
+  user: User;
+};
+
+export type ServerIngredientsResponse = ServerResponseGeneric<{
+  data: Ingredients;
+}>;
+
+export type ServerOrderResponse = ServerResponseGeneric<{
+  name: string;
+  order: Order;
+}>;
+
+export type ServerOrdersResponse = ServerResponseGeneric<{
+  name: string;
+  orders: Orders;
+}>;
+
+export type HTTPMethods = 'GET' | 'POST' | 'PATCH';
+
+export interface Options {
+  method?: HTTPMethods;
+  body?: string;
+  headers: {
+    'Content-Type'?: string;
+    authorization?: string;
+  };
+}
+
+export type RequestData = FormData | ArrayData;
