@@ -47,7 +47,6 @@ export const checkUserAuth = createAsyncThunk('profile/checkUserAuth', async (_,
 
 export const updateUser = createAsyncThunk('profile/updateUser', requestUpdateUser);
 
-// Слайс для профиля
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -56,10 +55,8 @@ export const profileSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-    //Обработка login
     .addCase(login.pending, (state) => {
       state.loading = true;
-      
     })
     .addCase(login.fulfilled, (state, action) => {
       state.user = action.payload;
@@ -71,7 +68,6 @@ export const profileSlice = createSlice({
       state.isAuthChecked = true;
     })
 
-    // Обработка register
     .addCase(register.pending, (state) => {
       state.loading = true;
     })
@@ -84,7 +80,6 @@ export const profileSlice = createSlice({
       state.loading = false;
     })
 
-    // Обработка logout
     .addCase(logout.pending, (state) => {
       state.loading = true;
     })
@@ -96,7 +91,6 @@ export const profileSlice = createSlice({
       state.loading = false;
     })
 
-    // Обработка getUser
     .addCase(getUser.pending, (state) => {
       state.loading = true;
     })
@@ -113,7 +107,6 @@ export const profileSlice = createSlice({
       state.user = action.payload?.user as (User | null) ;
     })
 
-    //Обработка checkUserAuth
     .addCase(checkUserAuth.fulfilled, (state) => {
       state.isAuthChecked = true;
     })
