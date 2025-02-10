@@ -1,28 +1,18 @@
 .modal {
-  composes: p-10 from global;
-  position: relative;
-  background: var(--background);
-  align-self: center;
-  overflow: overlay;
-  max-height: 100vh;
-  max-width: 720px;
-  width: 100%;
-  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 720px;
+  min-height: 539px;
   border-radius: 40px;
-}
-
-.header {
-  composes: mr-8 from global;
-  display: flex;
-  flex-wrap: nowrap;
-  min-height: 64px;
-  align-items: center;
+  background-color: var(--background);
+  z-index: 1001;
 }
 
 .close {
   position: absolute;
-  right: 40px;
   top: 60px;
+  right: 40px;
   cursor: pointer;
-  display: flex;
 }
