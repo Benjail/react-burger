@@ -1,0 +1,113 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-inactive-color) var(--background-element);
+  position: relative;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+.list::-webkit-scrollbar-track {
+  background: var(--background-element);
+  margin-bottom: 60px;
+}
+.list::-webkit-scrollbar-thumb {
+  background-color: var(--text-inactive-color);
+}
+
+.link {
+  text-decoration: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: var(--background);
+  border-radius: 40px;
+  margin-right: 8px;
+}
+
+.id {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.done {
+  color: var(--colors-interface-success);
+}
+
+.components {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  overflow: hidden;
+}
+
+.ingredients {
+  list-style: none;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-inactive-color) var(--background-element);
+}
+
+.ingredients::-webkit-scrollbar {
+  height: 8px;
+}
+.ingredients::-webkit-scrollbar-track {
+  background: var(--background-element);
+}
+.ingredients::-webkit-scrollbar-thumb {
+  background-color: var(--text-inactive-color);
+}
+
+.ingredient {
+  flex-shrink: 0;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background-image: linear-gradient(to right, #801ab2 0%, #4c4cff 100%);
+}
+
+.preview {
+  position: absolute;
+  object-fit: cover;
+  background-color: var(--background-alt);
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100px;
+}
+
+.preview-overlay {
+  filter: brightness(0.6);
+}
+
+.preview-amount {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.price {
+  display: flex;
+  gap: 8px;
+}

@@ -1,0 +1,15 @@
+.main {
+  max-width: 1280px;
+  margin: 0 auto;
+  max-height: calc(100vh - 88px);
+  overflow: hidden;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 608px 580px;
+  gap: 60px;
+  height: calc(100vh - 188px);
+}
+
+

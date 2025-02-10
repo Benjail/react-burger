@@ -15,7 +15,7 @@ import {
   import { useDispatch, useSelector } from "../../services/hooks/hooks";
   import { closeOrder, createOrder } from "../../services/slices/order-slice";
   import {Modal} from "../modal/modal";
-  import {OrderDetails} from "../order-details/order-details";
+  import {OrderDetails} from "./order-details/order-details";
   import styles from "./order.module.css";
   import { CartIngredient } from "../../utils/types";
   
@@ -131,9 +131,9 @@ import {
           >
             Оформить заказ
           </Button>
-          {order.open && order.data?.order.number &&(
+          {order.open && order.data?.number &&(
             <Modal onClose={onCompleteModalClose} header={""}>
-              <OrderDetails order={order.data.order.number} />
+              <OrderDetails order={order.data.number} />
             </Modal>
           )}
         </div>

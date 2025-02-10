@@ -4,6 +4,7 @@ import {
   ServerIngredientsResponse,
   ServerMessageResponse,
   ServerOrderResponse,
+  ServerOrdersResponse,
   ServerRefreshResponse,
   ServerResponse,
   ServerUserResponse,
@@ -54,6 +55,19 @@ const requestWithRefresh = async <T>(endpoint: string, options: Options): Promis
   }
 };
 
+export const refreshToken = () => {
+  const token = localStorage.getItem('refreshToken');
+  if (token) {
+    return requestPost<ServerRefreshResponse>('auth/token', { token }).then((refreshData) => {
+      localStorage.setItem('refreshToken', refreshData.refreshToken);
+      localStorage.setItem('accessToken', refreshData.accessToken);
+      return refreshData;
+    });
+  } else {
+    return Promise.reject();
+  }
+};
+
 export const getIngredientsApi = () => {
   return request<ServerIngredientsResponse>('ingredients')
   .catch(() => Promise.reject("Ошибка при загрузке ингредиентов"));
@@ -68,6 +82,8 @@ export const createOrderApi = (orderListIds: (string | null)[]) => {
     },
   })
 }
+
+export const getOrderApi = (orderNumber: string) => request<ServerOrdersResponse>(`orders/${orderNumber}`).then(res => res.success ? res.orders[0] : Promise.reject(res));
 
 export const loginApi = (data :FormData) => {
   return requestPost<ServerUserResponse>('auth/login', data);

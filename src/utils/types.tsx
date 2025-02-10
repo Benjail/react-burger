@@ -90,7 +90,7 @@ export type ServerRefreshResponse = ServerResponseGeneric<{
 }>;
 
 export type ServerUserResponse = ServerRefreshResponse & {
-  user: User;
+  user: User | null;
 };
 
 export type ServerIngredientsResponse = ServerResponseGeneric<{
@@ -119,3 +119,17 @@ export interface Options {
 }
 
 export type RequestData = FormData | ArrayData;
+
+export interface WSOrderResponse {
+  success: boolean;
+  orders: Orders;
+  total: number;
+  totalToday: number;
+}
+
+export enum WebsocketStatus {
+  OPENING = 'opening...',
+  CLOSING = 'closing...',
+  ONLINE = 'online',
+  OFFLINE = 'offline',
+}

@@ -1,4 +1,5 @@
-import {Ingredient, Ingredients, User, ServerOrderResponse, CartIngredients } from './types';
+import {Ingredient, Ingredients, User, CartIngredients, Orders, Order } from './types';
+import { WebsocketStatus } from './types';
 
 export interface CartStore {
   bun: string | null;
@@ -22,8 +23,8 @@ export interface IngredientDetailsStore {
   ingredient: Ingredient | null;
 }
 
-export interface OrderDetailsStore {
-  data: ServerOrderResponse | null;
+export interface OrderStore {
+  data: Order | null;
   loading: boolean;
   error: boolean;
   open: boolean;
@@ -34,5 +35,13 @@ export interface Store {
   burgerConstructor: CartStore;
   burgerIngredients: BurgerIngredientStore;
   ingredientDetails: IngredientDetailsStore;
-  orderDetails: OrderDetailsStore;
+  orderDetails: OrderStore;
+}
+
+export interface WebSocketStore {
+  status: WebsocketStatus;
+  orders: Orders;
+  total: number;
+  totalToday: number;
+  error: string;
 }
