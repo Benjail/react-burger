@@ -74,11 +74,13 @@ export const getIngredientsApi = () => {
 };
 
 export const createOrderApi = (orderListIds: (string | null)[]) => {
+  const authorization = localStorage.getItem('accessToken') ??'';
   return requestWithRefresh<ServerOrderResponse>('orders', {
     method: "POST",
     body: JSON.stringify({ingredients: orderListIds}),
     headers: {
       "Content-Type": "application/json",
+      authorization
     },
   })
 }

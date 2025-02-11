@@ -35,6 +35,7 @@ import BurgerIngredientPage from "../pages/burger-ingredient/burger-ingredient-p
 import { Modal } from './modal/modal';
 import OrderInfo from './order/order-info';
 import FeedPage from '../pages/feed';
+import OrderPage from '../pages/order';
 
 export const App = (): React.JSX.Element => {
   const overlayError = useSelector((state:any) => state.error?.overlayError || null);
@@ -62,31 +63,21 @@ export const App = (): React.JSX.Element => {
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} /> 
           </Route>
           <Route path={FEED_ROUTE} element={<FeedPage />} />
-          {!location.state?.backgroundLocation && (
-            <Route
-              path={INGREDIENT_ROUTE + "/:productId"}
-              element={<BurgerIngredientPage />}
-            />
-          )}
+          <Route path={INGREDIENT_ROUTE + "/:productId"} element={<BurgerIngredientPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path={FEED_NUMBER_ROUTE} element={ <OrderPage /> } />
+          <Route path = {PROFILE_ORDERS_NUMBER_ROUTE} element = { <ProtectedRouteElement onlyUnAuth = {false} element={<OrderPage />} /> } />
         </Routes>
         {location.state?.backgroundLocation && (
           <Routes>
-            <Route
-              path={INGREDIENT_ROUTE + "/:productId"}
-              element={<BurgerIngredientModal />}
-            />
-            <Route
-              path={FEED_NUMBER_ROUTE}
-              element={
+            <Route path={INGREDIENT_ROUTE + "/:productId"} element={<BurgerIngredientModal />} />
+            <Route path={FEED_NUMBER_ROUTE} element={ 
                 <Modal onClose={() => navigate(-1)} header={''}>
                   <OrderInfo />
                 </Modal>
               }
             />
-            <Route 
-              path = {PROFILE_ORDERS_NUMBER_ROUTE}
-              element = { 
+            <Route path = {PROFILE_ORDERS_NUMBER_ROUTE} element = { 
                 <Modal onClose={() => navigate(-1)} header={''}>
                   <OrderInfo/>
                 </Modal>
