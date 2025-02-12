@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormData from '../../copmonents/hooks/use-form-data';
 import styles from './login.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks/hooks';
 import { login } from '../../services/slices/profile-slice';
 import { FormEvent, useState } from 'react';
 
@@ -22,10 +22,10 @@ export const LoginPage = (): React.JSX.Element => {
     }
 
     try {
-      // @ts-ignore
       await dispatch(login(formData)).unwrap();
-    } catch (err: any) {
-      setError(err.message || 'Произошла ошибка');
+    } catch (err) {
+      if (err instanceof Error)
+        setError(err.message || 'Произошла ошибка');
     }
   };
 

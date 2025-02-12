@@ -4,20 +4,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import {
   appendBunCart, appendIngredientCart, removeCart, sortCart
 } from "../../services/slices/cart-slice";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
 import { nanoid } from "@reduxjs/toolkit";
-import { Ingredient, OrderIngredient } from "../../utils/types";
-
-const constructorDataSelector = (state: any) => ({
-  ingredients: state.ingredients?.data,
-  bunIngredient: state.cart.bun,
-  orderIngredients: state.cart.ingredients as OrderIngredient[],
-});
+import { Ingredient } from "../../utils/types";
 
 type BunItemProps = {
   first: boolean;
@@ -40,16 +34,19 @@ type IngredientItemProps = {
 }
 
 export const BurgerConstructor = (): React.JSX.Element  =>{
-  const dispatch = useDispatch();
-  const { ingredients, bunIngredient, orderIngredients } = useSelector(
-    constructorDataSelector
-  );
-  const [ingredientsMap, setIngredientsMap] = useState(new Map());
+const dispatch = useDispatch();
+
+const ingredients = useSelector((store) => store.ingredients.data);
+const cartIngredients = useSelector((store) => store.cart.ingredients);
+const bunIngredient = useSelector((store) => store.cart.bun);
+
+const [ingredientsMap, setIngredientsMap] = useState(new Map());
 
   useEffect(() => {
     setIngredientsMap(
-      new Map(ingredients.map((ingredient : Ingredient) => [ingredient._id, ingredient]))
-    );
+      ingredients 
+       ? new Map(ingredients.map((ingredient : Ingredient) => [ingredient._id, ingredient])
+    ): new Map());
   }, [ingredients]);
 
   const onDropBun = (item: Ingredient) => {
@@ -58,7 +55,7 @@ export const BurgerConstructor = (): React.JSX.Element  =>{
   const onDropIngredient = (item: Ingredient) => {
     dispatch(
       appendIngredientCart({
-        id: item._id,
+        _id: item._id,
         uuid: nanoid(),
       })
     );
@@ -98,9 +95,9 @@ export const BurgerConstructor = (): React.JSX.Element  =>{
       onDrop={onDropIngredient}
       className={styles.scrollItems}
     >
-      {orderIngredients.length ? (
-        orderIngredients.map(({ id, uuid }) => {
-          const ingredient = ingredientsMap.get(id);
+      {cartIngredients.length ? (
+        cartIngredients.map(({ _id, uuid }) => {
+          const ingredient = ingredientsMap.get(_id);
 
           if (!ingredient) {
             return null;
@@ -133,7 +130,7 @@ export const BurgerConstructor = (): React.JSX.Element  =>{
       <FirstBunItem />
       <ScrollItems />
       <LastBunItem />
-      <Order bunItem={bunIngredient} orderIngredients={orderIngredients}/>
+      <Order bunItem={bunIngredient} cartIngredients={cartIngredients}/>
     </div>
   );
 }

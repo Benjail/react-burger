@@ -30,8 +30,9 @@ export const ResetPasswordPage = (): React.JSX.Element => {
     try {
       await confirmReset(formData.password, formData.token);
      navigate('/login', { replace: true });
-    } catch (err: any) {
-      setError('Не удалось восстановить пароль. Проверьте введённые данные.');
+    } catch (err) {
+      if (err instanceof Error)
+        setError('Не удалось восстановить пароль. Проверьте введённые данные.');
     }
   };
 

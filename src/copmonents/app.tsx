@@ -1,8 +1,8 @@
 import { AppHeader } from './app-header/app-header';
 import styles from './app.module.css';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks/hooks";
 import { useEffect} from 'react';
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import BurgerIngredientModal from "../pages/burger-ingredient/burger-ingredient-modal";
 import { ForgotPasswordPage } from "../pages/forgot-password/forgot-password";
 import { HomePage } from "../pages/home/home";
@@ -18,6 +18,8 @@ import  ProtectedRouteElement  from "./protected/protected-route-element";
 import { checkUserAuth } from '../services/slices/profile-slice';
 import { getIngredients } from '../services/slices/ingredients-slice';
 import {
+  FEED_ROUTE,
+  FEED_NUMBER_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   HOME_ROUTE,
   INGREDIENT_ROUTE,
@@ -27,18 +29,21 @@ import {
   PROFILE_ROUTE,
   REGISTER_ROUTE,
   RESET_PASSWORD_ROUTE,
+  PROFILE_ORDERS_NUMBER_ROUTE,
 } from "../const/routes";
 import BurgerIngredientPage from "../pages/burger-ingredient/burger-ingredient-page";
+import { Modal } from './modal/modal';
+import OrderInfo from './order/order-info';
+import FeedPage from '../pages/feed';
+import OrderPage from '../pages/order';
 
 export const App = (): React.JSX.Element => {
   const overlayError = useSelector((state:any) => state.error?.overlayError || null);
   const location = useLocation();
-  const dispatch: any = useDispatch();
-  const user = useSelector((state:any) => state.profile.user);
-  console.log(user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("App mounted. Dispatching checkUserAuth...");
     dispatch(getIngredients());
     dispatch(checkUserAuth());
   }, [dispatch]);
@@ -57,21 +62,27 @@ export const App = (): React.JSX.Element => {
             <Route path= {PROFILE_ORDERS_ROUTE} element={<ProfileOrdersPage />} /> 
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} /> 
           </Route>
-
-          {!location.state?.backgroundLocation && (
-            <Route
-              path={INGREDIENT_ROUTE + "/:productId"}
-              element={<BurgerIngredientPage />}
-            />
-          )}
+          <Route path={FEED_ROUTE} element={<FeedPage />} />
+          <Route path={INGREDIENT_ROUTE + "/:productId"} element={<BurgerIngredientPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path={FEED_NUMBER_ROUTE} element={ <OrderPage /> } />
+          <Route path = {PROFILE_ORDERS_NUMBER_ROUTE} element = { <ProtectedRouteElement onlyUnAuth = {false} element={<OrderPage />} /> } />
         </Routes>
         {location.state?.backgroundLocation && (
           <Routes>
-            <Route
-              path={INGREDIENT_ROUTE + "/:productId"}
-              element={<BurgerIngredientModal />}
+            <Route path={INGREDIENT_ROUTE + "/:productId"} element={<BurgerIngredientModal />} />
+            <Route path={FEED_NUMBER_ROUTE} element={ 
+                <Modal onClose={() => navigate(-1)} header={''}>
+                  <OrderInfo />
+                </Modal>
+              }
             />
+            <Route path = {PROFILE_ORDERS_NUMBER_ROUTE} element = { 
+                <Modal onClose={() => navigate(-1)} header={''}>
+                  <OrderInfo/>
+                </Modal>
+              }
+              />
           </Routes>
         )}
       </div>

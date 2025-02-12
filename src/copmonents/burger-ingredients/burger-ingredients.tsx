@@ -2,7 +2,7 @@ import {
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/hooks/hooks";
 import styles from "./burger-ingredients.module.css";
 import { useLocation,  Link, } from "react-router-dom";
 import { IngredientType } from "../../utils/types";
@@ -10,8 +10,8 @@ import IngredientItem from "./ingredient-item/ingredient-item";
 import { getIngredients } from "../../services/slices/ingredients-slice";
 
 const BurgerIngredients = () => {
-  const { error, data } = useSelector((store: any) => store.ingredients);
-  const dispatch: any = useDispatch();
+  const { error, data } = useSelector((store) => store.ingredients);
+  const dispatch = useDispatch();
   const tabsRef = useRef<HTMLDivElement>(null);
   const groupBunRef = useRef<HTMLHeadingElement>(null);
   const groupSauceRef = useRef<HTMLHeadingElement>(null);
@@ -94,9 +94,9 @@ const BurgerIngredients = () => {
               </h2>
               <ul className={`${styles.list} mt-6 mr-2 mb-10 ml-4`}>
                 {data
-                //@ts-ignore
+               
                   .filter((ingredient) => ingredient.type === 'bun')
-                  //@ts-ignore
+               
                   .map((ingredient) => (
                     <Link className={styles.link} key={ingredient._id} to={`/ingredient/${ingredient._id}`} state={{ backgroundLocation: location }}>
                       <IngredientItem key={ingredient._id} ingredient={ingredient} />
@@ -110,11 +110,9 @@ const BurgerIngredients = () => {
               </h2>
               <ul className={`${styles.list} mt-6 mr-2 mb-10 ml-4`}>
                 {data
-                 //@ts-ignore
                   .filter((ingredient) => ingredient.type === 'sauce')
-                   //@ts-ignore
                   .map((ingredient) => (
-                    <Link className={styles.link} key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }}>
+                    <Link className={styles.link} key={ingredient._id} to={`/ingredient/${ingredient._id}`} state={{ backgroundLocation: location }}>
                       <IngredientItem key={ingredient._id} ingredient={ingredient} />
                     </Link>
                   ))}
@@ -126,11 +124,9 @@ const BurgerIngredients = () => {
               </h2>
               <ul className={`${styles.list} mt-6 mr-2 mb-10 ml-4`}>
                 {data
-                 //@ts-ignore
                   .filter((ingredient) => ingredient.type === 'main')
-                   //@ts-ignore
                   .map((ingredient) => (
-                    <Link className={styles.link} key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }} replace={true}>
+                    <Link className={styles.link} key={ingredient._id} to={`/ingredient/${ingredient._id}`} state={{ backgroundLocation: location }} replace={true}>
                       <IngredientItem key={ingredient._id} ingredient={ingredient} />
                     </Link>
                   ))}

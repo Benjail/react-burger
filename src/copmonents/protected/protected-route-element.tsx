@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks/hooks";
 import { Navigate, useLocation } from "react-router-dom";
 import Preloader from "../preloader/preloader";
 
@@ -8,8 +8,8 @@ type Props = {
 }
 
 const ProtectedRouteElement= ({ element, onlyUnAuth = false }: Props) : React.JSX.Element  => {
-  const isAuthChecked = useSelector((state:any) => state.profile.isAuthChecked);
-  const user = useSelector((state: any) => state.profile.user);
+  const isAuthChecked = useSelector((state) => state.profile.isAuthChecked);
+  const user = useSelector((state) => state.profile.user);
   const location = useLocation();
   
   console.log("isAuthChecked:", isAuthChecked);

@@ -1,35 +1,47 @@
-import { CartIngredient, CartIngredients, Ingredient, Ingredients, User, ServerOrderResponse } from './types';
+import {Ingredient, Ingredients, User, CartIngredients, Orders, Order } from './types';
+import { WebsocketStatus } from './types';
 
 export interface CartStore {
-  bun: CartIngredient | null;
+  bun: string | null;
   ingredients: CartIngredients;
 }
 
-export interface UserStore {
+export interface ProfileStore {
+  loading: boolean;
   user: User | null;
   isAuthChecked: boolean;
+  error: boolean;
 }
 
 export interface BurgerIngredientStore {
   data: Ingredients | null;
-  isLoading: boolean;
-  isError: boolean;
+  loading: boolean;
+  error: boolean;
 }
 
 export interface IngredientDetailsStore {
-  data: Ingredient | null;
+  ingredient: Ingredient | null;
 }
 
-export interface OrderDetailsStore {
-  data: ServerOrderResponse | null;
-  isLoading: boolean;
-  isError: boolean;
+export interface OrderStore {
+  data: Order | null;
+  loading: boolean;
+  error: boolean;
+  open: boolean;
 }
 
 export interface Store {
-  user: UserStore;
+  user: ProfileStore;
   burgerConstructor: CartStore;
   burgerIngredients: BurgerIngredientStore;
   ingredientDetails: IngredientDetailsStore;
-  orderDetails: OrderDetailsStore;
+  orderDetails: OrderStore;
+}
+
+export interface WebSocketStore {
+  status: WebsocketStatus;
+  orders: Orders;
+  total: number;
+  totalToday: number;
+  error: string;
 }

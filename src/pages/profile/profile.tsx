@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks/hooks'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { logout, updateUser } from '../../services/slices/profile-slice';
@@ -10,13 +10,13 @@ import { User } from '../../utils/types';
 export const ProfilePage = (): React.JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useSelector((store: any) => store.profile);
+  const { user } = useSelector((store) => store.profile);
   const [disabled, setDisabled] = useState(true);
   const { formData, onChangeFormData, setFormData, checkFormData } = useFormData({ ...user, password: '' });
   const [error, setError] = useState<string | null>(null);
   const [isShowButtons, setShowButtons] = useState(false);
 
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleLogout = (e: MouseEvent<HTMLSpanElement>) => {
@@ -46,8 +46,9 @@ export const ProfilePage = (): React.JSX.Element => {
       await dispatch(updateUser(formData)).unwrap();
       setFormData({ ...formData, password: '' });
       setShowButtons(false);
-    } catch (err: any) {
-      setError(err.message || 'Произошла ошибка');
+    } catch (err) {
+      if (err instanceof Error)
+        setError(err.message || 'Произошла ошибка');
     }
   };
 

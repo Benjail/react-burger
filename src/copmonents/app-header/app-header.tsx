@@ -1,10 +1,10 @@
 import styles from './app-header.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks/hooks';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from "react-router-dom";
 import {
+  FEED_ROUTE,
   HOME_ROUTE,
-  PROFILE_ORDERS_ROUTE,
   PROFILE_ROUTE,
 } from "../../const/routes";
 
@@ -35,7 +35,7 @@ const LinkItem = ({ icon: Icon, to, text }: Props): React.JSX.Element => {
 
 
 export const AppHeader = (): React.JSX.Element => {
-  const user = useSelector((state: any) => state.profile.user);
+  const user = useSelector((state) => state.profile.user);
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -44,7 +44,7 @@ export const AppHeader = (): React.JSX.Element => {
             <LinkItem icon={BurgerIcon} to={HOME_ROUTE} text="Конструктор" />
             <LinkItem
               icon={ListIcon}
-              to={PROFILE_ORDERS_ROUTE}
+              to={FEED_ROUTE}
               text="Лента заказов"
             />
           </ul>

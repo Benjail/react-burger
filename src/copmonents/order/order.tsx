@@ -12,11 +12,12 @@ import {
   } from "react";
   
   import { useLocation, useNavigate } from 'react-router-dom';
-  import { useDispatch, useSelector } from "react-redux";
+  import { useDispatch, useSelector } from "../../services/hooks/hooks";
   import { closeOrder, createOrder } from "../../services/slices/order-slice";
   import {Modal} from "../modal/modal";
-  import {OrderDetails} from "../order-details/order-details";
+  import {OrderDetails} from "./order-details/order-details";
   import styles from "./order.module.css";
+  import { CartIngredient } from "../../utils/types";
   
   const initialState = { totalPrice: 0 };
   function totalPriceReducer(state: any, action: any) {
@@ -31,34 +32,22 @@ import {
         throw new Error(`Wrong type of action: ${action.type}`);
     }
   }
-  
-  const orderDataSelector = (state: any) => ({
-    ingredients: state.ingredients.data,
-    order: state.order.data,
-    orderLoading: state.order.loading,
-    error: state.order.error,
-    orderOpen: state.order.open,
-    user: state.profile.user
-  });
-  
-  type Props = {
-    bunItem: string;
-    orderIngredients: OrderIngredient[];
-  }
 
-  type OrderIngredient = {
-    id: string;
-    uuid: string;
+  type Props = {
+    bunItem: string | null;
+    cartIngredients: CartIngredient[];
   }
 
   const OrderTotal = (props: Props): React.JSX.Element => {
-    const { ingredients, order, orderLoading, error, orderOpen, user } =
-      useSelector(orderDataSelector);
+    const ingredients  = useSelector((store) => store.ingredients.data);
+    const user = useSelector((store) => store.profile.user);
+    const order = useSelector((store) => store.order);
 
     const ingredientsMap = useMemo(
       () =>
-        //@ts-ignore
-        new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
+        ingredients ?
+      new Map(ingredients.map((ingredient) => [ingredient._id, ingredient]))
+      : new Map(),
       [ingredients]
     );
     const [valid, setValid] = useState(false);
@@ -92,15 +81,15 @@ import {
         }
       }
       
-      props.orderIngredients.forEach(({ id }) => {
+      props.cartIngredients.forEach(({ _id }) => {
         totalPriceDispatch({
           type: "ingredient",
-          payload: ingredientsMap.get(id),
+          payload: ingredientsMap.get(_id),
         });
       });
   
       setValid(Boolean(props.bunItem));
-    }, [ingredientsMap, props.bunItem, props.orderIngredients]);
+    }, [ingredientsMap, props.bunItem, props.cartIngredients]);
 
     const handleSubmitOrder = useCallback(() => {
       if (!user) {
@@ -109,14 +98,13 @@ import {
     
     const orderListIds = [
       props.bunItem, 
-      ...props.orderIngredients.map(({ id }) => id), 
+      ...props.cartIngredients.map(({ _id }) => _id), 
     ].filter(Boolean); 
       
     dispatch(
-      //@ts-ignore - временно игнорируем ошибку, если она всё ещё появляется
       createOrder(orderListIds)
     );
-  }, [user, navigate, location, dispatch, props.bunItem, props.orderIngredients]);
+  }, [user, navigate, location, dispatch, props.bunItem, props.cartIngredients]);
     
 
     const onCompleteModalClose = useCallback(() => {
@@ -125,7 +113,7 @@ import {
   
     return (
       <>
-        {error && <p className={styles.error}>{error}</p>}
+        {order.error && <p className={styles.error}>{order.error}</p>}
         <div className={styles.total}>
           <p className="text text_type_digits-medium mr-2">
             {totalPriceState.totalPrice}
@@ -138,14 +126,14 @@ import {
             type="primary"
             size="large"
             extraClass="ml-10"
-            disabled={orderLoading || !valid}
+            disabled={order.loading || !valid}
             onClick={handleSubmitOrder}
           >
             Оформить заказ
           </Button>
-          {orderOpen && (
+          {order.open && order.data?.number &&(
             <Modal onClose={onCompleteModalClose} header={""}>
-              <OrderDetails order={order.order?.number} />
+              <OrderDetails order={order.data.number} />
             </Modal>
           )}
         </div>

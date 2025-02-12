@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./order-details.module.css";
-import orderDoneImg from "../../images/done.png";
+import orderDoneImg from "../../../images/done.png";
 
 type Props = {
   order: number;
