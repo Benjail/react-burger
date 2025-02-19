@@ -14,7 +14,7 @@ export const createOrder = createAsyncThunk(
 );
 
 export const getOrder = createAsyncThunk("order/get", getOrderApi);
-const initialState: OrderStore = {
+export const initialState: OrderStore = {
   data: null,
   loading: false,
   error: false,

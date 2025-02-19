@@ -6,7 +6,7 @@ import { FormData, User } from "../../utils/types";
 export const ACCESS_TOKEN_COOKIE = "accessToken";
 export const REFRESH_TOKEN_KEY = "refreshToken";
 
-const initialState: ProfileStore = {
+export const initialState: ProfileStore = {
   user: null, 
   isAuthChecked: false,
   loading: false,
@@ -101,6 +101,7 @@ export const profileSlice = createSlice({
     .addCase(getUser.rejected, (state) => {
         state.isAuthChecked = true;
         state.loading = false;
+        state.error = true;
     })
     
     .addCase(updateUser.fulfilled, (state, action) => {
@@ -112,6 +113,7 @@ export const profileSlice = createSlice({
     })
     .addCase(checkUserAuth.rejected, (state) => {
       state.isAuthChecked = true;
+      state.error = true;
     })
   },
 });

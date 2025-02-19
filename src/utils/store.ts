@@ -7,10 +7,10 @@ export interface CartStore {
 }
 
 export interface ProfileStore {
-  loading: boolean;
+  loading: boolean | null;
   user: User | null;
-  isAuthChecked: boolean;
-  error: boolean;
+  isAuthChecked: boolean| null;
+  error: boolean | null;
 }
 
 export interface BurgerIngredientStore {

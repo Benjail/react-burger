@@ -3,7 +3,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import { BurgerIngredientStore } from "../../utils/store";
 
-const initialState : BurgerIngredientStore= {
+export const initialState : BurgerIngredientStore= {
     data: [],
     loading: false,
     error: false
