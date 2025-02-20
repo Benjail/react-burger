@@ -1,5 +1,3 @@
-
-
 import { Order, WebsocketStatus, WSOrderResponse } from '../../utils/types';
 import webSocketSlice, { initialState, connect, disconnect, wsOpen, wsClose, wsError, wsMessage } from './websocket-slice';
 
@@ -26,37 +24,37 @@ describe('webSocketSlice', () => {
     expect(state).toEqual(initialState);
   });
 
-  it('connect', () => {
+  it('should connect', () => {
     const action = { type: connect.type };
     const state = webSocketSlice.reducer(initialState, action);
     expect(state).toEqual({ ...initialState, status: WebsocketStatus.OPENING });
   });
 
-  it('disconnect', () => {
+  it('should disconnect', () => {
     const action = { type: disconnect.type };
     const state = webSocketSlice.reducer(initialState, action);
     expect(state).toEqual({ ...initialState, status: WebsocketStatus.CLOSING });
   });
 
-  it('wsOpen', () => {
+  it('should wsOpen', () => {
     const action = { type: wsOpen.type };
     const state = webSocketSlice.reducer(initialState, action);
     expect(state).toEqual({ ...initialState, status: WebsocketStatus.ONLINE, error: '' });
   });
 
-  it('wsClose', () => {
+  it('should wsClose', () => {
     const action = { type: wsClose.type };
     const state = webSocketSlice.reducer(initialState, action);
     expect(state).toEqual(initialState);
   });
 
-  it('wsError', () => {
+  it('should wsError', () => {
     const action = { type: wsError.type, payload: 'Error message' };
     const state = webSocketSlice.reducer(initialState, action);
     expect(state).toEqual({ ...initialState, status: WebsocketStatus.OFFLINE, error: 'Error message' });
   });
 
-  it('wsMessage', () => {
+  it('should wsMessage', () => {
     const action = { type: wsMessage.type, payload: message };
     const state = webSocketSlice.reducer(initialState, action);
     expect(state).toEqual({ ...initialState, orders: message.orders, total: message.total, totalToday: message.totalToday });
