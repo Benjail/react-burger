@@ -29,13 +29,13 @@ export const Modal = ({children, onClose, header}: PropsWithChildren<Props>): Re
   return ReactDOM.createPortal(
     <>
       <ModalOverlay onClick={onClose}>
-        <article className={styles.modal}>
+        <article className={styles.modal} data-testid='modal'>
           <div className={styles.content}>
             <div className={styles.header}>
               <h1 className="text text_type_main-large">{header}</h1>
             </div>
             {children}
-            <span className={styles.close}>
+            <span className={styles.close} data-testid='modal-close'>
               <CloseIcon type = "primary" onClick={onClose}/>
             </span>
           </div>

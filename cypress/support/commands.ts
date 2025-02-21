@@ -14,6 +14,12 @@
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
 //
+Cypress.Commands.add('addIngredient', (name: string) => {
+    cy.get('[data-testid="ingredient-group"]').contains(name).trigger('dragstart');
+    cy.get('[data-testid="cart-drop-target"]').trigger('drop');
+  });
+  
+  
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
 //
