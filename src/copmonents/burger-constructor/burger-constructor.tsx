@@ -168,7 +168,7 @@ function BunItem(props: BunItemProps) {
   return (
     <DropTarget onDrop={props.onDrop} accept="bun">
       {props.ingredient ? (
-        <div className={styles.bunItem} data-testid='cart-item-bun'>
+        <div className={styles.bunItem}>
           <ConstructorElement
             text={text}
             thumbnail={props.ingredient.image_mobile}
@@ -208,7 +208,7 @@ function DropTarget({ children, onDrop, accept, className }: DropTargetProps) {
   });
 
   return (
-    <div className={className} ref={dropTarget} data-testid='cart-drop-target'>
+    <div className={className} ref={dropTarget}  data-testid={`${accept}-drop-target`}>
       {children}
     </div>
   );

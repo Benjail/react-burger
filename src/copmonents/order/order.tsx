@@ -132,8 +132,10 @@ import {
             Оформить заказ
           </Button>
           {order.open && order.data?.number &&(
-            <Modal onClose={onCompleteModalClose} header={""}>
+            <Modal onClose={onCompleteModalClose} header={""}> 
+            <article data-testid='order-number'>
               <OrderDetails order={order.data.number} />
+            </article>
             </Modal>
           )}
         </div>

@@ -21,11 +21,12 @@ describe('Order', () => {
   });
 
   it('Should create order', () => {
-    cy.addIngredient('Флюоресцентная булка R2-D3');
+    cy.addBun('Флюоресцентная булка R2-D3');
     cy.addIngredient('Соус фирменный Space Sauce');
     cy.addIngredient('Сыр с астероидной плесенью');
 
     cy.get('button').contains('Оформить заказ').click();
-    cy.get(ORDER_NUMBER).contains('69126').should('exist');
+    cy.wait('@createOrder');
+    cy.get(ORDER_NUMBER).contains('69127').should('exist');
   });
 });

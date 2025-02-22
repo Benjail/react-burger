@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { CART_DROP_TARGET, INGREDIENT_GROUP } from "./selectors";
+import { BUN_DROP_TARGET, INGREDIENT_DROP_TARGET, INGREDIENT_GROUP } from "./selectors";
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -18,10 +18,16 @@ import { CART_DROP_TARGET, INGREDIENT_GROUP } from "./selectors";
 //
 //
 Cypress.Commands.add('addIngredient', (name: string) => {
-    cy.get(INGREDIENT_GROUP).contains(name).trigger('dragstart');
-    cy.get(CART_DROP_TARGET).trigger('drop');
-  });
-  
+  cy.get(INGREDIENT_GROUP).contains(name).trigger('dragstart');
+  cy.get(INGREDIENT_DROP_TARGET).trigger('drop');
+});
+
+Cypress.Commands.add('addBun', (name) => {
+  cy.get(INGREDIENT_GROUP).contains(name).should('be.visible').trigger('dragstart');
+  //cy.get(BUN_DROP_TARGET).should('exist') .first().trigger('drop');
+  //cy.get(BUN_LAST_SELECTOR).should('exist').trigger('drop');
+  cy.get(BUN_DROP_TARGET).should('exist').first().trigger('drop', { force: true });
+});
   
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
