@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+import { CART_DROP_TARGET, INGREDIENT_GROUP } from "./selectors";
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -15,8 +18,8 @@
 //
 //
 Cypress.Commands.add('addIngredient', (name: string) => {
-    cy.get('[data-testid="ingredient-group"]').contains(name).trigger('dragstart');
-    cy.get('[data-testid="cart-drop-target"]').trigger('drop');
+    cy.get(INGREDIENT_GROUP).contains(name).trigger('dragstart');
+    cy.get(CART_DROP_TARGET).trigger('drop');
   });
   
   

@@ -1,3 +1,5 @@
+import { BUN_LAST_SELECTOR, BUN_FIRST_SELECTOR, CART_DROP_TARGET } from '../support/selectors';
+
 beforeEach(() => {
     cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' }).as('checkUserAuth');
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as('getIngredients');
@@ -18,11 +20,11 @@ beforeEach(() => {
     it('should add bun correctly', () => {
       cy.addIngredient('Краторная булка N-200i');
   
-      cy.get('[data-testid="cart-item-bun"]:first', { timeout: 5000 })
+      cy.get(BUN_FIRST_SELECTOR, { timeout: 5000 })
         .should('exist')
         .contains('Краторная булка N-200i (верх)');
   
-      cy.get('[data-testid="cart-item-bun"]:last', { timeout: 5000 })
+      cy.get(BUN_LAST_SELECTOR, { timeout: 5000 })
         .should('exist')
         .contains('Краторная булка N-200i (низ)');
     });
@@ -30,10 +32,8 @@ beforeEach(() => {
     it('should add ingredient correctly', () => {
       cy.addIngredient('Соус Spicy-X');
   
-      cy.get('[data-testid="cart-drop-target"]', { timeout: 5000 })
+      cy.get(CART_DROP_TARGET, { timeout: 5000 })
         .should('exist')
         .contains('Соус Spicy-X');
     });
   });
-  
-  

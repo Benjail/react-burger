@@ -1,3 +1,5 @@
+import { ORDER_NUMBER } from "../support/selectors";
+
 beforeEach(() => {
     cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' }).as('checkUserAuth');
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as('getIngredients');
@@ -24,6 +26,6 @@ describe('Order', () => {
     cy.addIngredient('Сыр с астероидной плесенью');
 
     cy.get('button').contains('Оформить заказ').click();
-    cy.get('[data-testid=order-number]').contains('69126').should('exist');
+    cy.get(ORDER_NUMBER).contains('69126').should('exist');
   });
 });
