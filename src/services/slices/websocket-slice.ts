@@ -7,7 +7,7 @@ export const wsClose = createAction('webSocket/close');
 export const wsMessage = createAction<WSOrderResponse, 'webSocket/message'>('webSocket/message');
 export const wsError = createAction<string, 'webSocket/error'>('webSocket/error');
 
-const initialState: WebSocketStore = {
+export const initialState: WebSocketStore = {
   status: WebsocketStatus.OFFLINE,
   orders: [],
   total: 0,

@@ -39,14 +39,14 @@ const OrderInfo = () => {
   }, [dispatch, number, order, orders]);
 
   const ingredients = order && getUniqIngredientsWithAmount(order.ingredients, data);
-
   return (
+    <article data-testid='order-number'>
     <div className={styles.order}>
       {error && <h2>Ошибка при загрузке заказа</h2>}
       {!location.state && !orderLoading && !error && !order && <h2>{`Заказ #0${number} не найден`}</h2>}
       {order && (
         <>
-          <h2 className={'text text_type_digits-default'}>{`#0${order.number}`}</h2>
+          <div className={'text text_type_digits-default'}>{`#0${order.number}`}</div>
           <span className='text text_type_main-medium mt-10'>{order.name}</span>
           <span className={`${styles.status} text text_type_main-default mt-3 ${order.status === 'done' ? styles.done : ''}`}>{Statuses[order.status]}</span>
           <span className='text text_type_main-medium mt-15'>Состав:</span>
@@ -76,6 +76,7 @@ const OrderInfo = () => {
         </>
       )}
     </div>
+    </article>
   );
 };
 

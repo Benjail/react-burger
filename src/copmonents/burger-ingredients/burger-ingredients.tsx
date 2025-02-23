@@ -87,7 +87,7 @@ const BurgerIngredients = () => {
               Начинки
             </Tab>
           </div>
-          <div className={`${styles.group}`} onScroll={handleScrollIngredientGroup}>
+          <div className={`${styles.group}`} onScroll={handleScrollIngredientGroup} data-testid='ingredient-group'>
             <section>
               <h2 className='text text_type_main-medium' ref={groupBunRef}>
                 Булки

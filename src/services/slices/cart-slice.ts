@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartStore } from "../../utils/store";
 import { CartIngredient } from "../../utils/types";
 
-const initialState = {
+export const initialState = {
   bun: null,
   ingredients: [],
 } satisfies CartStore as CartStore;

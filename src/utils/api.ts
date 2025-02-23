@@ -68,9 +68,12 @@ export const refreshToken = () => {
   }
 };
 
-export const getIngredientsApi = () => {
+export const getIngredientsApi = () => { 
   return request<ServerIngredientsResponse>('ingredients')
-  .catch(() => Promise.reject("Ошибка при загрузке ингредиентов"));
+    .catch((error) => {
+      console.error('Ошибка при загрузке ингредиентов:', error);  // Логируем ошибку
+      return Promise.reject("Ошибка при загрузке ингредиентов");
+    });
 };
 
 export const createOrderApi = (orderListIds: (string | null)[]) => {
