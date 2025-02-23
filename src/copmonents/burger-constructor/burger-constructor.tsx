@@ -24,6 +24,7 @@ type DropTargetProps = {
   onDrop: (item: any) => void;
   accept: string;
   className?: string;
+  position? : string; 
 }
 
 type IngredientItemProps = {
@@ -166,7 +167,7 @@ function BunItem(props: BunItemProps) {
   const text = `${props.ingredient?.name} (${props.first ? "верх" : "низ"})`;
 
   return (
-    <DropTarget onDrop={props.onDrop} accept="bun">
+    <DropTarget onDrop={props.onDrop} accept="bun" position={props.first ? "top" : "bottom"}>
       {props.ingredient ? (
         <div className={styles.bunItem}>
           <ConstructorElement
@@ -196,7 +197,7 @@ function BunItem(props: BunItemProps) {
   );
 }
 
-function DropTarget({ children, onDrop, accept, className }: DropTargetProps) {
+function DropTarget({ children, onDrop, accept, className, position}: DropTargetProps ) {
   const [, dropTarget] = useDrop({
     accept,
     drop(item) {
@@ -208,7 +209,7 @@ function DropTarget({ children, onDrop, accept, className }: DropTargetProps) {
   });
 
   return (
-    <div className={className} ref={dropTarget}  data-testid={`${accept}-drop-target`}>
+    <div className={className} ref={dropTarget} data-testid={`${accept}-drop-target${position ? `-${position}` : ''}`}>
       {children}
     </div>
   );

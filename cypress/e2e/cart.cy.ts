@@ -1,4 +1,4 @@
-import { BUN_DROP_TARGET, INGREDIENT_DROP_TARGET } from '../support/selectors';
+import { BUN_DROP_TARGET, BUN_DROP_TARGET_BOTTOM, BUN_DROP_TARGET_TOP, INGREDIENT_DROP_TARGET } from '../support/selectors';
 
 beforeEach(() => {
     cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' }).as('checkUserAuth');
@@ -18,11 +18,10 @@ beforeEach(() => {
 
   describe('Cart', () => {
     it('should add bun correctly', () => {
-      cy.addBun('Краторная булка N-200i');
-  
-     
-    cy.get(`${BUN_DROP_TARGET}:first`).contains('Краторная булка N-200i (верх)').should('exist');
-    cy.get(`${BUN_DROP_TARGET}:last`).contains('Краторная булка N-200i (низ)').should('exist');
+    cy.addBun('Краторная булка N-200i');     
+    
+    cy.get(BUN_DROP_TARGET_TOP).contains('Краторная булка N-200i (верх)').should('exist');
+    cy.get(BUN_DROP_TARGET_BOTTOM).contains('Краторная булка N-200i (низ)').should('exist');
     });
   
     it('should add ingredient correctly', () => {
