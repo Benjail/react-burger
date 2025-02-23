@@ -1,6 +1,7 @@
 import { useSelector } from "../../services/hooks/hooks";
 import { Navigate, useLocation } from "react-router-dom";
 import Preloader from "../preloader/preloader";
+import { HOME_ROUTE } from "../../const/routes";
 
 type Props = {
   element: JSX.Element;
@@ -21,7 +22,7 @@ const ProtectedRouteElement= ({ element, onlyUnAuth = false }: Props) : React.JS
   }
 
   if (onlyUnAuth && user) {
-    const { from } = location.state || { from: { pathname: '/' } };
+    const { from } = location.state || { from: { pathname: HOME_ROUTE } };
     return <Navigate to={from} />;
   }
 
