@@ -1,4 +1,4 @@
-import { BUN_DROP_TARGET, BUN_DROP_TARGET_BOTTOM, BUN_DROP_TARGET_TOP, INGREDIENT_DROP_TARGET } from '../support/selectors';
+import { BUN_DROP_TARGET_BOTTOM, BUN_DROP_TARGET_TOP, INGREDIENT_DROP_TARGET } from '../support/selectors';
 
 beforeEach(() => {
     cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' }).as('checkUserAuth');
