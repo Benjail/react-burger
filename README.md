@@ -1,2 +1,2 @@
 # react-burger
-Ссылка на Pages: https://benjail.github.io/react-burger/index.html
+Ссылка на проект: https://benjail.github.io/react-burger
